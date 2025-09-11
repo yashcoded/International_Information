@@ -47,3 +47,4 @@ out/
 
 # Other files and directories
 coverage/
+.vercel
