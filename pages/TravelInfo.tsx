@@ -291,8 +291,14 @@ const TravelInfoDetails = () => {
 
   // Offline detection
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    const handleOnline = () => {
+      setIsOnline(true);
+      console.log('App is now online');
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      console.log('App is now offline');
+    };
     
     // Check initial online status
     setIsOnline(navigator.onLine);
@@ -312,9 +318,19 @@ const TravelInfoDetails = () => {
       try {
         setCountriesLoading(true);
         
+        // If offline, use static list immediately
+        if (!navigator.onLine) {
+          console.log('Offline detected, using static countries list');
+          setCountries(staticCountries);
+          setCountriesLoading(false);
+          return;
+        }
+        
         // Try alternative API first
         try {
-          const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
+          const response = await axios.get('https://countriesnow.space/api/v0.1/countries', {
+            timeout: 5000 // 5 second timeout
+          });
           if (response.data && response.data.data) {
             const apiCountries = response.data.data.map((country: any) => ({
               cca3: country.iso3 || country.iso2 || 'UNK',
