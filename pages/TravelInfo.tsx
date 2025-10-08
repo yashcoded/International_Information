@@ -43,6 +43,10 @@ const TravelInfoDetails = () => {
   const [showSecondTransitDropdown, setShowSecondTransitDropdown] = useState<boolean>(false);
   const [secondTransitSelectedIndex, setSecondTransitSelectedIndex] = useState<number>(-1);
   
+  // Rate limiting
+  const [requestCount, setRequestCount] = useState<number>(0);
+  const MAX_REQUESTS = 5;
+  
   // Search states for each country field
   const [passportSearch, setPassportSearch] = useState<string>('');
   const [travelFromSearch, setTravelFromSearch] = useState<string>('');
@@ -476,6 +480,12 @@ const TravelInfoDetails = () => {
 
   // Handle form submission with AI agent functionality
   const handleSubmit = async () => {
+    // Check rate limit
+    if (requestCount >= MAX_REQUESTS) {
+      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+      return;
+    }
+    
     const isSingleLayover = layoverType === 'single';
     const hasRequiredFields = passportFrom && travelFrom && travelTo && transitCountry && layoverDuration && willLeaveAirport;
     const hasMultipleLayoverFields = isSingleLayover || (secondTransitCountry && secondLayoverDuration && secondWillLeaveAirport);
@@ -516,6 +526,9 @@ const TravelInfoDetails = () => {
         // Add AI response to conversation history
         setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
         
+        // Increment request count
+        setRequestCount(prev => prev + 1);
+        
       } catch (error) {
         console.error('Error fetching visa information:', error);
         setError('Sorry, I encountered an error while processing your request. Please try again.');
@@ -533,6 +546,12 @@ const TravelInfoDetails = () => {
 
   // Handle follow-up questions
   const handleFollowUp = async (question: string) => {
+    // Check rate limit
+    if (requestCount >= MAX_REQUESTS) {
+      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+      return;
+    }
+    
     console.log('Follow-up question clicked:', question);
     setIsLoading(true);
     setError(null);
@@ -553,6 +572,9 @@ const TravelInfoDetails = () => {
       
       // Add AI response to conversation history
       setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
+      
+      // Increment request count
+      setRequestCount(prev => prev + 1);
       
     } catch (error) {
       console.error('Error processing follow-up question:', error);
@@ -701,7 +723,8 @@ const TravelInfoDetails = () => {
       <nav className={styles.navbar}>
         <div className={styles.navContainer}>
           <Link href="/" className={styles.logo}>
-            ✈️ Travel Info
+            <img src="/logo.svg" alt="Travel Info Logo" width={40} height={40} className={styles.logoImage} />
+            <span>Travel Info</span>
           </Link>
           <div className={styles.navLinks}>
             <Link href="/" className={styles.navLink}>Home</Link>
@@ -711,8 +734,11 @@ const TravelInfoDetails = () => {
       </nav>
       
       {/* Main Content Container */}
-      <div className={styles.container}>
-        <h1 className={styles.header}>🌍 International Travel Assistant</h1>
+    <div className={styles.container}>
+        <h1 className={styles.header}>
+          <span className={styles.headerIcon}>🌍</span>
+          <span>International Travel Assistant</span>
+        </h1>
       
       {/* AI Agent Introduction */}
       <div className={styles.aiAgentContainer}>
@@ -1094,20 +1120,34 @@ const TravelInfoDetails = () => {
       )}
 
       {/* Submit Button */}
-        <button 
-          onClick={handleSubmit} 
-          className={styles.button}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <span className={styles.loadingSpinner}></span>
-              Processing...
-            </>
-          ) : (
-            'Get Travel Information'
+        <div>
+          {requestCount > 0 && (
+            <div style={{ 
+              textAlign: 'center', 
+              marginBottom: '12px', 
+              color: requestCount >= MAX_REQUESTS ? '#ef4444' : '#94a3b8',
+              fontSize: '0.9rem'
+            }}>
+              Requests used: {requestCount} / {MAX_REQUESTS}
+            </div>
           )}
-      </button>
+          <button 
+            onClick={handleSubmit} 
+            className={styles.button}
+            disabled={isLoading || requestCount >= MAX_REQUESTS}
+          >
+            {isLoading ? (
+              <>
+                <span className={styles.loadingSpinner}></span>
+                Processing...
+              </>
+            ) : requestCount >= MAX_REQUESTS ? (
+              'Request Limit Reached'
+            ) : (
+              'Get Travel Information'
+            )}
+          </button>
+        </div>
 
         {/* Error Message */}
         {error && (
