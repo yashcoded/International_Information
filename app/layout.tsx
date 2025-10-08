@@ -7,8 +7,8 @@ export const metadata = {
   description: 'Get instant, accurate visa requirements and transit information for international travel. AI-powered travel companion with official links and personalized recommendations.',
   keywords: 'travel, visa, international, transit, layover, AI assistant, travel information',
   icons: {
-    icon: '/favicon.svg',
-    apple: '/logo.svg',
+    icon: '/icon-192x192.png',
+    apple: '/icon-192x192.png',
   },
   manifest: '/manifest.json',
   themeColor: '#3b82f6',
