@@ -1,7 +1,7 @@
 /* Navigation Styles */
 .navbar {
-  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -25,11 +25,22 @@
   color: white;
   text-decoration: none;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo:hover {
   color: #667eea;
   transform: scale(1.05);
+}
+
+.logoImage {
+  transition: all 0.3s ease;
+}
+
+.logo:hover .logoImage {
+  transform: rotate(10deg);
 }
 
 .navLinks {
@@ -70,65 +81,57 @@
 }
 
 .container {
-  padding: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 20px;
-  max-width: 1000px;
-  margin: 20px auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  z-index: 0;
-}
-
-.container > * {
-  position: relative;
-  z-index: 1;
+  padding: 60px 40px;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  min-height: calc(100vh - 70px);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .header {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  color: #fff;
-  margin-bottom: 40px;
+  color: #f8fafc;
+  margin-bottom: 20px;
   text-align: center;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(45deg, #fff, #f0f8ff);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.header span:not(.headerIcon) {
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.headerIcon {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
 .formSection {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 30px;
-  border-radius: 15px;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  box-sizing: border-box;
+  background: #1e293b;
+  padding: 48px;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
+  max-width: 900px;
+  margin: 32px auto;
 }
 
 .label {
   display: block;
-  font-size: 1.1rem;
-  margin-bottom: 12px;
-  color: #2d3748;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #f1f5f9;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.025em;
 }
 
 .layoverCounter {
@@ -185,12 +188,13 @@
   width: 100%;
   padding: 15px 20px;
   font-size: 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #334155;
   border-radius: 12px;
   margin-bottom: 25px;
-  background: #fff;
+  background: #0f172a;
+  color: #f1f5f9;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   max-width: 100%;
 }
@@ -198,31 +202,34 @@
 .select:focus,
 .input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   transform: translateY(-2px);
+  background: #1e293b;
 }
 
 .button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: #fff;
-  padding: 15px 40px;
+  padding: 18px 48px;
   font-size: 1.1rem;
   font-weight: 600;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
   width: 100%;
-  margin-top: 20px;
+  margin-top: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 15px 50px rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .button:active {
@@ -230,21 +237,22 @@
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+  background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
 }
 
 .visaInfoContainer {
-  margin-top: 30px;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  margin-top: 32px;
+  padding: 48px;
+  background: #1e293b;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid #334155;
+  max-width: 900px;
+  margin: 32px auto;
   position: relative;
-  overflow: hidden;
 }
 
 .visaInfoContainer::before {
@@ -254,33 +262,33 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  border-radius: 24px 24px 0 0;
 }
 
 .subheader {
   font-size: 2rem;
-  color: #2d3748;
-  margin-bottom: 25px;
-  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 32px;
+  margin-top: 16px;
+  font-weight: 800;
   text-align: center;
-  position: relative;
+  letter-spacing: -0.01em;
 }
 
 .subheader::after {
   content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
   width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  margin: 16px auto 0;
   border-radius: 2px;
 }
 
 .visaInfoContent {
   font-size: 1.1rem;
-  color: #4a5568;
+  color: #cbd5e1;
   line-height: 1.8;
   white-space: pre-line;
   word-wrap: break-word;
@@ -289,16 +297,18 @@
 .visaInfoPoint {
   margin-bottom: 20px;
   padding: 15px;
-  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  background: #0f172a;
   border-radius: 12px;
-  border-left: 4px solid #667eea;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
+  color: #cbd5e1;
 }
 
 .visaInfoPoint:hover {
   transform: translateX(5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: #1e293b;
 }
 
 .link {
@@ -325,10 +335,10 @@
 .visaInfoHeader {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #2d3748;
+  color: #f8fafc;
   margin: 20px 0 15px 0;
   padding-bottom: 8px;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid #334155;
 }
 
 .visaInfoList {
@@ -338,24 +348,24 @@
 
 .visaInfoListItem {
   margin-bottom: 8px;
-  color: #4a5568;
+  color: #cbd5e1;
   line-height: 1.6;
 }
 
 .visaInfoNumberedItem {
   margin: 10px 0;
   padding: 10px 15px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: #0f172a;
   border-radius: 8px;
-  border-left: 3px solid #667eea;
-  color: #4a5568;
+  border-left: 3px solid #3b82f6;
+  color: #cbd5e1;
   line-height: 1.6;
 }
 
 .visaInfoList strong,
 .visaInfoPoint strong,
 .visaInfoNumberedItem strong {
-  color: #2d3748;
+  color: #f8fafc;
   font-weight: 700;
 }
 
@@ -373,38 +383,38 @@
   cursor: pointer;
   padding: 12px 16px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border: 2px solid transparent;
+  background: #0f172a;
+  border: 2px solid #334155;
   transition: all 0.3s ease;
 }
 
 .radioOption:hover {
-  background: linear-gradient(135deg, #e6f3ff 0%, #dbeafe 100%);
-  border-color: #667eea;
+  background: #1e293b;
+  border-color: #3b82f6;
 }
 
 .radioInput {
   margin-right: 12px;
   width: 18px;
   height: 18px;
-  accent-color: #667eea;
+  accent-color: #3b82f6;
   cursor: pointer;
 }
 
 .radioLabel {
   font-size: 1rem;
-  color: #4a5568;
+  color: #cbd5e1;
   font-weight: 500;
   cursor: pointer;
 }
 
 .radioOption:has(.radioInput:checked) {
-  background: linear-gradient(135deg, #e6f3ff 0%, #dbeafe 100%);
-  border-color: #667eea;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  border-color: #3b82f6;
 }
 
 .radioOption:has(.radioInput:checked) .radioLabel {
-  color: #2d3748;
+  color: #f8fafc;
   font-weight: 600;
 }
 
@@ -423,20 +433,22 @@
   width: 100%;
   padding: 15px 20px;
   font-size: 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #334155;
   border-radius: 12px;
-  background: #fff;
+  background: #0f172a;
+  color: #f1f5f9;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   max-width: 100%;
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
   transform: translateY(-2px);
+  background: #1e293b;
 }
 
 .searchDropdown {
@@ -444,11 +456,11 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #fff;
-  border: 2px solid #e2e8f0;
+  background: #1e293b;
+  border: 2px solid #334155;
   border-top: none;
   border-radius: 0 0 12px 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
@@ -457,15 +469,15 @@
 .searchOption {
   padding: 12px 20px;
   cursor: pointer;
-  color: #4a5568;
+  color: #cbd5e1;
   font-size: 1rem;
   transition: all 0.2s ease;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #334155;
 }
 
 .searchOption:hover {
-  background: linear-gradient(135deg, #e6f3ff 0%, #dbeafe 100%);
-  color: #2d3748;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+  color: #f8fafc;
   font-weight: 500;
 }
 
@@ -487,8 +499,9 @@
 }
 
 .selectedInput {
-  border-color: #38a169 !important;
-  background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%) !important;
+  border-color: #3b82f6 !important;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+  color: #f8fafc !important;
 }
 
 .selectedIndicator {
@@ -496,7 +509,7 @@
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
-  background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   padding: 4px 8px;
   border-radius: 6px;
@@ -543,22 +556,29 @@
 }
 
 .aiAgentContainer {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: white;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
+  padding: 32px;
+  border-radius: 20px;
+  margin-bottom: 32px;
   text-align: center;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  max-width: 900px;
+  margin: 0 auto 32px;
 }
 
 .aiAgentTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
 }
 
 .aiAgentDescription {
-  font-size: 1rem;
-  opacity: 0.9;
+  font-size: 1.1rem;
+  color: #e0e7ff;
+  font-weight: 300;
+  line-height: 1.6;
 }
 

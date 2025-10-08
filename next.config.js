@@ -1,3 +1,10 @@
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  disable: process.env.NODE_ENV === 'development'
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Ensure API routes work properly
@@ -9,10 +16,8 @@ const nextConfig = {
       },
     ];
   },
-  // Optimize for production
-  swcMinify: true,
   // Enable static optimization
   output: 'standalone',
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)
