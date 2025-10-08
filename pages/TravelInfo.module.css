@@ -535,6 +535,24 @@
   100% { transform: rotate(360deg); }
 }
 
+.offlineIndicator {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #f59e0b;
+  color: #92400e;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 .errorMessage {
   background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
   color: #c53030;

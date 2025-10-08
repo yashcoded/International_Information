@@ -47,6 +47,9 @@ const TravelInfoDetails = () => {
   const [requestCount, setRequestCount] = useState<number>(0);
   const MAX_REQUESTS = 5;
   
+  // Offline detection
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+  
   // Search states for each country field
   const [passportSearch, setPassportSearch] = useState<string>('');
   const [travelFromSearch, setTravelFromSearch] = useState<string>('');
@@ -286,6 +289,23 @@ const TravelInfoDetails = () => {
     { cca3: 'ZWE', name: { common: 'Zimbabwe' } }
   ];
 
+  // Offline detection
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    
+    // Check initial online status
+    setIsOnline(navigator.onLine);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   // Fetch country data for the dropdowns
   useEffect(() => {
     const fetchCountries = async () => {
@@ -480,6 +500,12 @@ const TravelInfoDetails = () => {
 
   // Handle form submission with AI agent functionality
   const handleSubmit = async () => {
+    // Check if offline
+    if (!isOnline) {
+      setError('📡 No internet connection. Please check your internet connection and try again.');
+      return;
+    }
+    
     // Check rate limit
     if (requestCount >= MAX_REQUESTS) {
       setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
@@ -531,7 +557,15 @@ const TravelInfoDetails = () => {
         
       } catch (error) {
         console.error('Error fetching visa information:', error);
-        setError('Sorry, I encountered an error while processing your request. Please try again.');
+        
+        // Check if it's a network error
+        if (error instanceof Error && (error.message.includes('Network Error') || error.message.includes('ERR_NETWORK'))) {
+          setError('📡 Network error. Please check your internet connection and try again.');
+        } else if (error instanceof Error && error.message.includes('timeout')) {
+          setError('⏱️ Request timed out. Please check your internet connection and try again.');
+        } else {
+          setError('Sorry, I encountered an error while processing your request. Please try again.');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -546,6 +580,12 @@ const TravelInfoDetails = () => {
 
   // Handle follow-up questions
   const handleFollowUp = async (question: string) => {
+    // Check if offline
+    if (!isOnline) {
+      setError('📡 No internet connection. Please check your internet connection and try again.');
+      return;
+    }
+    
     // Check rate limit
     if (requestCount >= MAX_REQUESTS) {
       setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
@@ -578,7 +618,15 @@ const TravelInfoDetails = () => {
       
     } catch (error) {
       console.error('Error processing follow-up question:', error);
-      setError('Sorry, I encountered an error while processing your question. Please try again.');
+      
+      // Check if it's a network error
+      if (error instanceof Error && (error.message.includes('Network Error') || error.message.includes('ERR_NETWORK'))) {
+        setError('📡 Network error. Please check your internet connection and try again.');
+      } else if (error instanceof Error && error.message.includes('timeout')) {
+        setError('⏱️ Request timed out. Please check your internet connection and try again.');
+      } else {
+        setError('Sorry, I encountered an error while processing your question. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -1149,6 +1197,13 @@ const TravelInfoDetails = () => {
           </button>
         </div>
 
+        {/* Offline Status Indicator */}
+        {!isOnline && (
+          <div className={styles.offlineIndicator}>
+            📡 You're currently offline. Some features may not work properly.
+          </div>
+        )}
+        
         {/* Error Message */}
         {error && (
           <div className={styles.errorMessage}>
