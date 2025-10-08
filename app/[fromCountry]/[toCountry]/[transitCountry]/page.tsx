@@ -31,6 +31,9 @@ const TravelInfoDetails = () => {
   const [conversationHistory, setConversationHistory] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const [countriesLoading, setCountriesLoading] = useState<boolean>(true);
   const [willLeaveAirport, setWillLeaveAirport] = useState<string>('');
+  
+  // Offline detection
+  const [isOnline, setIsOnline] = useState<boolean>(true);
 
   // Static list of countries as fallback
   const staticCountries = [
@@ -229,6 +232,23 @@ const TravelInfoDetails = () => {
     { cca3: 'ZMB', name: { common: 'Zambia' } },
     { cca3: 'ZWE', name: { common: 'Zimbabwe' } }
   ];
+
+  // Offline detection
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    
+    // Check initial online status
+    setIsOnline(navigator.onLine);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   // Fetch country data for the dropdowns
   useEffect(() => {

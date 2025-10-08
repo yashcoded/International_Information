@@ -43,6 +43,13 @@ const TravelInfoDetails = () => {
   const [showSecondTransitDropdown, setShowSecondTransitDropdown] = useState<boolean>(false);
   const [secondTransitSelectedIndex, setSecondTransitSelectedIndex] = useState<number>(-1);
   
+  // Rate limiting
+  const [requestCount, setRequestCount] = useState<number>(0);
+  const MAX_REQUESTS = 5;
+  
+  // Offline detection
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+  
   // Search states for each country field
   const [passportSearch, setPassportSearch] = useState<string>('');
   const [travelFromSearch, setTravelFromSearch] = useState<string>('');
@@ -282,15 +289,48 @@ const TravelInfoDetails = () => {
     { cca3: 'ZWE', name: { common: 'Zimbabwe' } }
   ];
 
+  // Offline detection
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      console.log('App is now online');
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+      console.log('App is now offline');
+    };
+    
+    // Check initial online status
+    setIsOnline(navigator.onLine);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   // Fetch country data for the dropdowns
   useEffect(() => {
     const fetchCountries = async () => {
       try {
         setCountriesLoading(true);
         
+        // If offline, use static list immediately
+        if (!navigator.onLine) {
+          console.log('Offline detected, using static countries list');
+          setCountries(staticCountries);
+          setCountriesLoading(false);
+          return;
+        }
+        
         // Try alternative API first
         try {
-          const response = await axios.get('https://countriesnow.space/api/v0.1/countries');
+          const response = await axios.get('https://countriesnow.space/api/v0.1/countries', {
+            timeout: 5000 // 5 second timeout
+          });
           if (response.data && response.data.data) {
             const apiCountries = response.data.data.map((country: any) => ({
               cca3: country.iso3 || country.iso2 || 'UNK',
@@ -476,6 +516,18 @@ const TravelInfoDetails = () => {
 
   // Handle form submission with AI agent functionality
   const handleSubmit = async () => {
+    // Check if offline
+    if (!isOnline) {
+      setError('📡 No internet connection. Please check your internet connection and try again.');
+      return;
+    }
+    
+    // Check rate limit
+    if (requestCount >= MAX_REQUESTS) {
+      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+      return;
+    }
+    
     const isSingleLayover = layoverType === 'single';
     const hasRequiredFields = passportFrom && travelFrom && travelTo && transitCountry && layoverDuration && willLeaveAirport;
     const hasMultipleLayoverFields = isSingleLayover || (secondTransitCountry && secondLayoverDuration && secondWillLeaveAirport);
@@ -516,9 +568,20 @@ const TravelInfoDetails = () => {
         // Add AI response to conversation history
         setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
         
+        // Increment request count
+        setRequestCount(prev => prev + 1);
+        
       } catch (error) {
         console.error('Error fetching visa information:', error);
-        setError('Sorry, I encountered an error while processing your request. Please try again.');
+        
+        // Check if it's a network error
+        if (error instanceof Error && (error.message.includes('Network Error') || error.message.includes('ERR_NETWORK'))) {
+          setError('📡 Network error. Please check your internet connection and try again.');
+        } else if (error instanceof Error && error.message.includes('timeout')) {
+          setError('⏱️ Request timed out. Please check your internet connection and try again.');
+        } else {
+          setError('Sorry, I encountered an error while processing your request. Please try again.');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -533,6 +596,18 @@ const TravelInfoDetails = () => {
 
   // Handle follow-up questions
   const handleFollowUp = async (question: string) => {
+    // Check if offline
+    if (!isOnline) {
+      setError('📡 No internet connection. Please check your internet connection and try again.');
+      return;
+    }
+    
+    // Check rate limit
+    if (requestCount >= MAX_REQUESTS) {
+      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+      return;
+    }
+    
     console.log('Follow-up question clicked:', question);
     setIsLoading(true);
     setError(null);
@@ -554,9 +629,20 @@ const TravelInfoDetails = () => {
       // Add AI response to conversation history
       setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
       
+      // Increment request count
+      setRequestCount(prev => prev + 1);
+      
     } catch (error) {
       console.error('Error processing follow-up question:', error);
-      setError('Sorry, I encountered an error while processing your question. Please try again.');
+      
+      // Check if it's a network error
+      if (error instanceof Error && (error.message.includes('Network Error') || error.message.includes('ERR_NETWORK'))) {
+        setError('📡 Network error. Please check your internet connection and try again.');
+      } else if (error instanceof Error && error.message.includes('timeout')) {
+        setError('⏱️ Request timed out. Please check your internet connection and try again.');
+      } else {
+        setError('Sorry, I encountered an error while processing your question. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -701,7 +787,8 @@ const TravelInfoDetails = () => {
       <nav className={styles.navbar}>
         <div className={styles.navContainer}>
           <Link href="/" className={styles.logo}>
-            ✈️ Travel Info
+            <img src="/logo.svg" alt="Travel Info Logo" width={40} height={40} className={styles.logoImage} />
+            <span>Travel Info</span>
           </Link>
           <div className={styles.navLinks}>
             <Link href="/" className={styles.navLink}>Home</Link>
@@ -711,8 +798,11 @@ const TravelInfoDetails = () => {
       </nav>
       
       {/* Main Content Container */}
-      <div className={styles.container}>
-        <h1 className={styles.header}>🌍 International Travel Assistant</h1>
+    <div className={styles.container}>
+        <h1 className={styles.header}>
+          <span className={styles.headerIcon}>🌍</span>
+          <span>International Travel Assistant</span>
+        </h1>
       
       {/* AI Agent Introduction */}
       <div className={styles.aiAgentContainer}>
@@ -1094,21 +1184,42 @@ const TravelInfoDetails = () => {
       )}
 
       {/* Submit Button */}
-        <button 
-          onClick={handleSubmit} 
-          className={styles.button}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <span className={styles.loadingSpinner}></span>
-              Processing...
-            </>
-          ) : (
-            'Get Travel Information'
+        <div>
+          {requestCount > 0 && (
+            <div style={{ 
+              textAlign: 'center', 
+              marginBottom: '12px', 
+              color: requestCount >= MAX_REQUESTS ? '#ef4444' : '#94a3b8',
+              fontSize: '0.9rem'
+            }}>
+              Requests used: {requestCount} / {MAX_REQUESTS}
+            </div>
           )}
-      </button>
+          <button 
+            onClick={handleSubmit} 
+            className={styles.button}
+            disabled={isLoading || requestCount >= MAX_REQUESTS}
+          >
+            {isLoading ? (
+              <>
+                <span className={styles.loadingSpinner}></span>
+                Processing...
+              </>
+            ) : requestCount >= MAX_REQUESTS ? (
+              'Request Limit Reached'
+            ) : (
+              'Get Travel Information'
+            )}
+          </button>
+        </div>
 
+        {/* Offline Status Indicator */}
+        {!isOnline && (
+          <div className={styles.offlineIndicator}>
+            📡 You're currently offline. Some features may not work properly.
+          </div>
+        )}
+        
         {/* Error Message */}
         {error && (
           <div className={styles.errorMessage}>
