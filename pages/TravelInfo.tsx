@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styles from './TravelInfo.module.css';
-import ThemeToggle from './_ThemeToggle';
+import NavbarPages from './_NavbarPages';
 
 interface Country {
   cca3: string;
@@ -784,21 +784,7 @@ const TravelInfoDetails = () => {
 
   return (
     <div>
-      {/* Navigation Bar */}
-      <nav className={styles.navbar}>
-        <div className={styles.navContainer}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo.svg" alt="Travel Info Logo" width={40} height={40} className={styles.logoImage} />
-            <span>Travel Info</span>
-          </Link>
-          <div className={styles.navLinks}>
-            <Link href="/" className={styles.navLink}>Home</Link>
-            <Link href="/TravelInfo" className={styles.navLink}>Get Information</Link>
-            <Link href="/About" className={styles.navLink}>About</Link>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <NavbarPages />
       
       {/* Main Content Container */}
     <div className={styles.container}>

@@ -2,20 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import styles from './layout.module.css';
-import ThemeToggleSimple from './ThemeToggleSimple';
-import './theme.css';
+import { useRouter } from 'next/router';
+import styles from './_NavbarPages.module.css';
+import ThemeToggle from './_ThemeToggle';
 
-export default function NavbarClient() {
+export default function NavbarPages() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const router = useRouter();
 
   // Close menu when route changes
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
+    const handleRouteChange = () => setIsMenuOpen(false);
+    router.events?.on('routeChangeStart', handleRouteChange);
+    return () => {
+      router.events?.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router]);
 
   // Prevent scroll when menu is open
   useEffect(() => {
@@ -30,15 +32,15 @@ export default function NavbarClient() {
   }, [isMenuOpen]);
 
   const isActive = (path: string) => {
-    if (path === '/') return pathname === '/';
-    return pathname?.startsWith(path);
+    if (path === '/') return router.pathname === '/';
+    return router.pathname === path;
   };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.navContainer}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo.svg" alt="Travel Info Logo" width={40} height={40} className={styles.logoImage} />
+          <img src="/logo.svg" alt="Travel Info Logo" width={40} height={40} className={styles.logoImage} />
           <span className={styles.logoText}>
             <span className={styles.logoPrimary}>Travel</span>
             <span className={styles.logoSecondary}>Info</span>
@@ -49,7 +51,7 @@ export default function NavbarClient() {
         <div className={styles.navLinks}>
           <Link 
             href="/" 
-            className={`${styles.navLink} ${isActive('/') && pathname === '/' ? styles.navLinkActive : ''}`}
+            className={`${styles.navLink} ${isActive('/') ? styles.navLinkActive : ''}`}
           >
             Home
           </Link>
@@ -66,7 +68,7 @@ export default function NavbarClient() {
             About
           </Link>
           <div className={styles.themeToggleWrapper}>
-            <ThemeToggleSimple />
+            <ThemeToggle />
           </div>
         </div>
 
@@ -96,7 +98,7 @@ export default function NavbarClient() {
         <div className={styles.mobileMenuContent}>
           <Link 
             href="/" 
-            className={`${styles.mobileNavLink} ${isActive('/') && pathname === '/' ? styles.mobileNavLinkActive : ''}`}
+            className={`${styles.mobileNavLink} ${isActive('/') ? styles.mobileNavLinkActive : ''}`}
             onClick={() => setIsMenuOpen(false)}
           >
             <span className={styles.mobileNavIcon}>🏠</span>
@@ -121,7 +123,7 @@ export default function NavbarClient() {
           <div className={styles.mobileThemeToggle}>
             <span className={styles.mobileNavIcon}>🎨</span>
             Theme
-            <ThemeToggleSimple />
+            <ThemeToggle />
           </div>
         </div>
       </div>

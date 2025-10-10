@@ -1,26 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './About.module.css';
-import ThemeToggle from './_ThemeToggle';
+import NavbarPages from './_NavbarPages';
 
 const About: React.FC = () => {
   return (
     <>
-      {/* Navigation Bar */}
-      <nav className={styles.navbar}>
-        <div className={styles.navContainer}>
-          <Link href="/" className={styles.logo}>
-            <img src="/logo.svg" alt="Logo" width="40" height="40" className={styles.logoImage} />
-            Travel Info
-          </Link>
-          <div className={styles.navLinks}>
-            <Link href="/" className={styles.navLink}>Home</Link>
-            <Link href="/TravelInfo" className={styles.navLink}>Get Information</Link>
-            <Link href="/About" className={styles.navLink}>About</Link>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
+      <NavbarPages />
 
       <div className={styles.container}>
         <div className={styles.heroSection}>
