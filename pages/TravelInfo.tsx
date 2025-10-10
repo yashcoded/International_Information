@@ -1211,7 +1211,7 @@ const TravelInfoDetails = () => {
             ) : (
               'Get Travel Information'
             )}
-          </button>
+      </button>
         </div>
 
         {/* Offline Status Indicator */}
@@ -1239,11 +1239,11 @@ const TravelInfoDetails = () => {
           
           {/* Follow-up Questions */}
           {suggestions.length > 0 && (
-            <div style={{ marginTop: '20px' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '15px', color: '#2d3748' }}>
+            <div className={styles.suggestionsContainer}>
+              <h3 className={styles.suggestionsTitle}>
                 💡 You might also want to know:
               </h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <div className={styles.suggestionsGrid}>
                 {suggestions.map((suggestion, index) => (
                   <button
                     key={index}
@@ -1254,38 +1254,7 @@ const TravelInfoDetails = () => {
                       handleFollowUp(suggestion);
                     }}
                     disabled={isLoading}
-                    style={{
-                      background: isLoading 
-                        ? 'linear-gradient(135deg, #a0aec0 0%, #718096 100%)'
-                        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      color: 'white',
-                      border: 'none',
-                      padding: '10px 18px',
-                      borderRadius: '25px',
-                      cursor: isLoading ? 'not-allowed' : 'pointer',
-                      fontSize: '0.9rem',
-                      fontWeight: '500',
-                      transition: 'all 0.3s ease',
-                      opacity: isLoading ? 0.6 : 1,
-                      boxShadow: '0 2px 8px rgba(102, 126, 234, 0.2)',
-                      minHeight: '40px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center'
-                    }}
-                    onMouseOver={(e) => {
-                      if (!isLoading) {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
-                        e.currentTarget.style.background = 'linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%)';
-                      }
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(102, 126, 234, 0.2)';
-                      e.currentTarget.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    }}
+                    className={styles.suggestionButton}
                   >
                     {suggestion}
                   </button>
@@ -1300,28 +1269,16 @@ const TravelInfoDetails = () => {
       {conversationHistory.length > 0 && (
         <div className={styles.visaInfoContainer}>
           <h2 className={styles.subheader}>💬 Conversation History</h2>
-          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          <div className={styles.conversationHistory}>
             {conversationHistory.map((message, index) => (
               <div
                 key={index}
-                style={{
-                  marginBottom: '15px',
-                  padding: '15px',
-                  borderRadius: '12px',
-                  background: message.role === 'user' 
-                    ? 'linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%)'
-                    : 'linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%)',
-                  borderLeft: `4px solid ${message.role === 'user' ? '#667eea' : '#764ba2'}`,
-                }}
+                className={message.role === 'user' ? styles.messageUser : styles.messageAssistant}
               >
-                <div style={{ 
-                  fontWeight: '600', 
-                  marginBottom: '8px',
-                  color: message.role === 'user' ? '#2d3748' : '#4a5568'
-                }}>
+                <div className={styles.messageRole}>
                   {message.role === 'user' ? '👤 You' : '🤖 AI Assistant'}
                 </div>
-                <div style={{ color: '#4a5568', lineHeight: '1.6' }}>
+                <div className={styles.messageContent}>
                   {message.role === 'assistant' ? formatVisaInfo(message.content) : message.content}
                 </div>
               </div>
@@ -1330,6 +1287,57 @@ const TravelInfoDetails = () => {
         </div>
       )}
       </div>
+      
+      {/* Footer */}
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>✈️ Travel Info</h3>
+            <p className={styles.footerText}>
+              AI-powered travel assistant providing accurate visa and transit information for international travelers.
+            </p>
+            <p className={styles.footerText}>
+              Born from a confused student's layover nightmare, built to help you travel stress-free.
+            </p>
+          </div>
+          
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>🔗 Quick Links</h3>
+            <div className={styles.footerLinks}>
+              <Link href="/" className={styles.footerLink}>
+                <span>→</span> Home
+              </Link>
+              <Link href="/TravelInfo" className={styles.footerLink}>
+                <span>→</span> Get Information
+              </Link>
+              <Link href="/About" className={styles.footerLink}>
+                <span>→</span> About
+              </Link>
+            </div>
+          </div>
+          
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>👨‍💻 Connect</h3>
+            <p className={styles.footerText}>
+              Built by Yash, an international student and developer.
+            </p>
+            <div className={styles.footerSocial}>
+              <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} title="Portfolio">
+                🌐
+              </a>
+              <a href="https://github.com/yashcoded" target="_blank" rel="noopener noreferrer" className={styles.socialLink} title="GitHub">
+                💻
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className={styles.footerBottom}>
+          <p className={styles.footerCopyright}>
+            © {new Date().getFullYear()} Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash</a>. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
