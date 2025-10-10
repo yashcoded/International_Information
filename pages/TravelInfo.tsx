@@ -793,6 +793,7 @@ const TravelInfoDetails = () => {
           <div className={styles.navLinks}>
             <Link href="/" className={styles.navLink}>Home</Link>
             <Link href="/TravelInfo" className={styles.navLink}>Get Information</Link>
+            <Link href="/About" className={styles.navLink}>About</Link>
           </div>
         </div>
       </nav>
