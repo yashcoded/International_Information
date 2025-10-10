@@ -20,12 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
       </Head>
       
-      <div style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
-      }}>
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
     </>
   );
 }

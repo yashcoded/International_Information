@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './About.module.css';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from './_ThemeToggle';
 
 const About: React.FC = () => {
   return (

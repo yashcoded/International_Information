@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styles from './TravelInfo.module.css';
-import ThemeToggle from './ThemeToggle';
+import ThemeToggle from './_ThemeToggle';
 
 interface Country {
   cca3: string;

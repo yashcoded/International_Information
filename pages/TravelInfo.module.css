@@ -84,8 +84,8 @@
   padding: 80px 60px;
   background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   min-height: calc(100vh - 70px);
-  max-width: 1600px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
 }
 
 .header {
