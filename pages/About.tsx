@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './About.module.css';
+import ThemeToggle from './ThemeToggle';
 
 const About: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const About: React.FC = () => {
             <Link href="/" className={styles.navLink}>Home</Link>
             <Link href="/TravelInfo" className={styles.navLink}>Get Information</Link>
             <Link href="/About" className={styles.navLink}>About</Link>
+            <ThemeToggle />
           </div>
         </div>
       </nav>

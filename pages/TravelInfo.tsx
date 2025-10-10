@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import styles from './TravelInfo.module.css';
+import ThemeToggle from './ThemeToggle';
 
 interface Country {
   cca3: string;
@@ -794,6 +795,7 @@ const TravelInfoDetails = () => {
             <Link href="/" className={styles.navLink}>Home</Link>
             <Link href="/TravelInfo" className={styles.navLink}>Get Information</Link>
             <Link href="/About" className={styles.navLink}>About</Link>
+            <ThemeToggle />
           </div>
         </div>
       </nav>
