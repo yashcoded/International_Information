@@ -29,6 +29,11 @@ body[data-theme='light'] {
 body[data-theme='light'] {
   background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
   color: #1e293b !important;
+  min-height: 100vh;
+}
+
+html[data-theme='light'] {
+  background: #f8fafc !important;
 }
 
 [data-theme='light'] .container,

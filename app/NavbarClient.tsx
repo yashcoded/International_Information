@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './layout.module.css';
 import ThemeToggleSimple from './ThemeToggleSimple';
+import './theme.css';
 
 export default function NavbarClient() {
   return (

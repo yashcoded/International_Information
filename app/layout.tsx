@@ -1,5 +1,4 @@
 import NavbarClient from './NavbarClient';
-import './theme.css';
 
 export const metadata = {
   title: 'International Travel Information - AI-Powered Visa Assistant',
