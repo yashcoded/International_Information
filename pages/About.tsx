@@ -196,6 +196,57 @@ const About: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Footer */}
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>✈️ Travel Info</h3>
+            <p className={styles.footerText}>
+              AI-powered travel assistant providing accurate visa and transit information for international travelers.
+            </p>
+            <p className={styles.footerText}>
+              Born from a confused student's layover nightmare, built to help you travel stress-free.
+            </p>
+          </div>
+          
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>🔗 Quick Links</h3>
+            <div className={styles.footerLinks}>
+              <Link href="/" className={styles.footerLink}>
+                <span>→</span> Home
+              </Link>
+              <Link href="/TravelInfo" className={styles.footerLink}>
+                <span>→</span> Get Information
+              </Link>
+              <Link href="/About" className={styles.footerLink}>
+                <span>→</span> About
+              </Link>
+            </div>
+          </div>
+          
+          <div className={styles.footerSection}>
+            <h3 className={styles.footerTitle}>👨‍💻 Connect</h3>
+            <p className={styles.footerText}>
+              Built by Yash, an international student and developer.
+            </p>
+            <div className={styles.footerSocial}>
+              <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} title="Portfolio">
+                🌐
+              </a>
+              <a href="https://github.com/yashcoded" target="_blank" rel="noopener noreferrer" className={styles.socialLink} title="GitHub">
+                💻
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div className={styles.footerBottom}>
+          <p className={styles.footerCopyright}>
+            © {new Date().getFullYear()} Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash</a>. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </>
   );
 };

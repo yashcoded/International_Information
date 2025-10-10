@@ -650,3 +650,250 @@
   line-height: 1.6;
 }
 
+/* Conversation History */
+.conversationHistory {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.conversationHistory::-webkit-scrollbar {
+  width: 8px;
+}
+
+.conversationHistory::-webkit-scrollbar-track {
+  background: #0f172a;
+  border-radius: 4px;
+}
+
+.conversationHistory::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+.conversationHistory::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+.messageUser {
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.messageAssistant {
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #312e81 0%, #3730a3 100%);
+  border-left: 4px solid #8b5cf6;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+.messageRole {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #f8fafc;
+  font-size: 0.95rem;
+}
+
+.messageContent {
+  color: #cbd5e1;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Follow-up Suggestions */
+.suggestionsContainer {
+  margin-top: 32px;
+  padding: 24px;
+  background: #0f172a;
+  border-radius: 16px;
+  border: 2px solid #334155;
+}
+
+.suggestionsTitle {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #f8fafc;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.suggestionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.suggestionButton {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.suggestionButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+.suggestionButton:disabled {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+/* Footer */
+.footer {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  padding: 60px 40px 40px;
+  margin-top: 80px;
+  border-top: 2px solid #334155;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.footerSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.footerTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footerText {
+  color: #94a3b8;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.footerLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footerLink {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.footerLink:hover {
+  color: #3b82f6;
+  transform: translateX(5px);
+}
+
+.footerSocial {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.socialLink {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.socialLink:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.footerBottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 30px;
+  border-top: 1px solid #334155;
+  text-align: center;
+}
+
+.footerCopyright {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.footerCopyright a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footerCopyright a:hover {
+  color: #60a5fa;
+}
+
+@media (max-width: 1024px) {
+  .footerContent {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 24px 30px;
+    margin-top: 60px;
+  }
+  
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .suggestionsGrid {
+    flex-direction: column;
+  }
+  
+  .suggestionButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
