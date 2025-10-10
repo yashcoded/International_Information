@@ -24,21 +24,6 @@ export default function App({ Component, pageProps }: AppProps) {
         minHeight: '100vh',
         background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
       }}>
-        <style jsx global>{`
-          html {
-            background: #0f172a;
-            margin: 0;
-            padding: 0;
-          }
-          body {
-            margin: 0;
-            padding: 0;
-            background: #0f172a;
-          }
-          * {
-            box-sizing: border-box;
-          }
-        `}</style>
         <Component {...pageProps} />
       </div>
     </>

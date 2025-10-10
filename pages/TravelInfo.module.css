@@ -929,13 +929,28 @@ body[data-theme='light'] .header {
 
 [data-theme='light'] .formSection,
 [data-theme='light'] .visaInfoContainer,
-[data-theme='light'] .aiAgentContainer,
 body[data-theme='light'] .formSection,
-body[data-theme='light'] .visaInfoContainer,
-body[data-theme='light'] .aiAgentContainer {
+body[data-theme='light'] .visaInfoContainer {
   background: #ffffff;
   border-color: #e2e8f0;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='light'] .aiAgentContainer,
+body[data-theme='light'] .aiAgentContainer {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+}
+
+[data-theme='light'] .aiAgentTitle,
+body[data-theme='light'] .aiAgentTitle {
+  color: white;
+}
+
+[data-theme='light'] .aiAgentDescription,
+body[data-theme='light'] .aiAgentDescription {
+  color: #e0e7ff;
 }
 
 [data-theme='light'] .label,
