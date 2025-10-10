@@ -615,3 +615,119 @@
   }
 }
 
+/* Light Theme Support */
+[data-theme='light'] .navbar,
+body[data-theme='light'] .navbar {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .logo,
+[data-theme='light'] .navLink,
+body[data-theme='light'] .logo,
+body[data-theme='light'] .navLink {
+  color: #1e293b;
+}
+
+[data-theme='light'] .navLink:hover,
+body[data-theme='light'] .navLink:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+[data-theme='light'] .container,
+body[data-theme='light'] .container {
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+[data-theme='light'] .title,
+[data-theme='light'] .sectionTitle,
+body[data-theme='light'] .title,
+body[data-theme='light'] .sectionTitle {
+  color: #1e293b;
+}
+
+[data-theme='light'] .subtitle,
+[data-theme='light'] .text,
+[data-theme='light'] .bulletItem,
+body[data-theme='light'] .subtitle,
+body[data-theme='light'] .text,
+body[data-theme='light'] .bulletItem {
+  color: #475569;
+}
+
+[data-theme='light'] .card,
+[data-theme='light'] .cardGradient,
+body[data-theme='light'] .card,
+body[data-theme='light'] .cardGradient {
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+[data-theme='light'] .textHighlight,
+body[data-theme='light'] .textHighlight {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-left-color: #3b82f6;
+  color: #1e3a8a;
+}
+
+[data-theme='light'] .feature,
+body[data-theme='light'] .feature {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+[data-theme='light'] .feature:hover,
+body[data-theme='light'] .feature:hover {
+  background: #ffffff;
+}
+
+[data-theme='light'] .featureText,
+body[data-theme='light'] .featureText {
+  color: #475569;
+}
+
+[data-theme='light'] .ctaSection,
+body[data-theme='light'] .ctaSection {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+}
+
+[data-theme='light'] .footer,
+body[data-theme='light'] .footer {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-top-color: #e2e8f0;
+}
+
+[data-theme='light'] .footerTitle,
+body[data-theme='light'] .footerTitle {
+  color: #1e293b;
+}
+
+[data-theme='light'] .footerText,
+body[data-theme='light'] .footerText {
+  color: #64748b;
+}
+
+[data-theme='light'] .footerLink,
+body[data-theme='light'] .footerLink {
+  color: #475569;
+}
+
+[data-theme='light'] .footerCopyright,
+body[data-theme='light'] .footerCopyright {
+  color: #64748b;
+}
+
+[data-theme='light'] .socialLink,
+body[data-theme='light'] .socialLink {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+[data-theme='light'] .socialLink:hover,
+body[data-theme='light'] .socialLink:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+}
+
