@@ -1,0 +1,65 @@
+# Node modules
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+/.pnp
+.pnp.js
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# MacOS system files
+.DS_Store
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+*.env
+
+# Next.js generated files
+.next/
+out/
+next-env.d.ts
+.next/
+dist/
+
+# Static export
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Other files and directories
+coverage/
+.vercel
+
+# PWA files (auto-generated)
+public/sw.js
+public/workbox-*.js
+public/worker-*.js
+public/sw.js.map
+public/workbox-*.js.map
+public/worker-*.js.map
+public/swe-worker-*.js
+public/swe-worker-*.js.map
