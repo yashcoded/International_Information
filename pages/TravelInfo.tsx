@@ -551,7 +551,8 @@ const TravelInfoDetails = () => {
       setConversationHistory(prev => [...prev, { role: 'user', content: userQuery }]);
       
       try {
-        const response = await axios.post<VisaInfoResponse>('/api/visa-info', {
+        // Prepare request payload - include second layover if multiple
+        const requestPayload: any = {
           passportFrom,
           travelFrom,
           travelTo,
@@ -560,7 +561,16 @@ const TravelInfoDetails = () => {
           willLeaveAirport,
           conversationId,
           conversationHistory: conversationHistory.slice(-5) // Send last 5 messages for context
-        });
+        };
+
+        // Add second layover details if multiple layovers
+        if (layoverType === 'multiple') {
+          requestPayload.secondTransitCountry = secondTransitCountry;
+          requestPayload.secondLayoverDuration = secondLayoverDuration;
+          requestPayload.secondWillLeaveAirport = secondWillLeaveAirport;
+        }
+
+        const response = await axios.post<VisaInfoResponse>('/api/visa-info', requestPayload);
         
         setVisaInfo(response.data.visaInfo);
         setConversationId(response.data.conversationId || null);
