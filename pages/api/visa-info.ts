@@ -152,7 +152,7 @@ IMPORTANT: At the end of your response, add a section titled "Suggested follow-u
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: messages,
-      max_tokens: 800,
+      max_tokens: 2000,
       temperature: 0.7,
     });
 

@@ -81,18 +81,18 @@
 }
 
 .container {
-  padding: 80px 60px;
+  padding: 40px 60px;
   background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   min-height: calc(100vh - 70px);
-  width: 100%;
-  margin: 0;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .header {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: #f8fafc;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   text-align: center;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -110,19 +110,25 @@
 }
 
 .headerIcon {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 .formSection {
   background: #1e293b;
-  padding: 60px 80px;
+  padding: 40px 50px;
   border-radius: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid #334155;
-  max-width: 1200px;
-  margin: 32px auto;
+  max-width: 1000px;
+  margin: 24px auto;
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
 }
 
 @media (max-width: 1024px) {
@@ -258,15 +264,14 @@
 }
 
 .visaInfoContainer {
-  margin-top: 32px;
   padding: 60px 80px;
   background: #1e293b;
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid #334155;
-  max-width: 1200px;
   margin: 32px auto;
   position: relative;
+  max-width: 1400px;
 }
 
 @media (max-width: 1024px) {
@@ -450,10 +455,6 @@
 .searchContainer {
   position: relative;
   margin-bottom: 25px;
-}
-
-.searchContainerWithSpacing {
-  margin-top: 24px;
 }
 
 .searchWrapper {
