@@ -1084,9 +1084,12 @@ const TravelInfoDetails = () => {
       {/* Second Layover Fields - Show when 2 layovers is selected */}
       {layoverType === 'multiple' && (
         <>
+          {/* Divider between layovers */}
+          <div style={{ margin: '40px 0 20px 0', borderTop: '2px solid #334155' }} />
+          
           {/* Second Transit Country Search */}
           <div className={styles.searchContainer}>
-            <label className={styles.label}>
+            <label className={`${styles.label} ${styles.labelWithSpacing}`}>
               Transit country:
               <span className={styles.layoverCounter}>2</span>
             </label>

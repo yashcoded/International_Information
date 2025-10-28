@@ -154,6 +154,11 @@
   letter-spacing: 0.025em;
 }
 
+.labelWithSpacing {
+  margin-top: 32px;
+  display: block;
+}
+
 .layoverCounter {
   display: inline-block;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
