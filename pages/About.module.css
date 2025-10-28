@@ -81,25 +81,25 @@
 
 /* Container */
 .container {
-  padding: 80px 60px 120px;
+  padding: 40px 60px 80px;
   background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   min-height: calc(100vh - 70px);
-  width: 100%;
-  margin: 0;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* Hero Section */
 .heroSection {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
   animation: fadeInUp 0.8s ease-out;
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 900;
   color: #f8fafc;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   letter-spacing: -0.02em;
   line-height: 1.1;
   display: flex;
@@ -356,6 +356,12 @@
 }
 
 /* Responsive Design */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
+}
+
 @media (max-width: 1024px) {
   .container {
     padding: 60px 40px 80px;

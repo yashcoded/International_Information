@@ -123,7 +123,7 @@ const About: React.FC = () => {
             <h2 className={styles.sectionTitle}>👨‍💻 About Me</h2>
             <div className={styles.card}>
               <p className={styles.text}>
-                Hi! I'm <strong>Yash</strong>, a software developer, international student, 
+                Hi! I'm <strong>Yash Bhatia</strong>, a software developer, international student, 
                 and occasional victim of confusing travel regulations.
               </p>
               <p className={styles.text}>
@@ -216,7 +216,7 @@ const About: React.FC = () => {
           <div className={styles.footerSection}>
             <h3 className={styles.footerTitle}>👨‍💻 Connect</h3>
             <p className={styles.footerText}>
-              Built by Yash, an international student and developer.
+              Built by Yash Bhatia, an international student and developer.
             </p>
             <div className={styles.footerSocial}>
               <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} title="Portfolio">
@@ -231,7 +231,7 @@ const About: React.FC = () => {
         
         <div className={styles.footerBottom}>
           <p className={styles.footerCopyright}>
-            © {new Date().getFullYear()} Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash</a>. All rights reserved.
+            © {new Date().getFullYear()} Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash Bhatia</a>. All rights reserved.
           </p>
         </div>
       </footer>
