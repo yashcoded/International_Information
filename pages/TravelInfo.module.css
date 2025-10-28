@@ -316,7 +316,7 @@
 
 .visaInfoContent {
   font-size: 1.1rem;
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1.8;
   white-space: pre-line;
   word-wrap: break-word;
@@ -330,7 +330,7 @@
   border-left: 4px solid #3b82f6;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
-  color: #cbd5e1;
+  color: #e2e8f0;
 }
 
 .visaInfoPoint:hover {
@@ -363,7 +363,7 @@
 .visaInfoHeader {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #e2e8f0;
   margin: 20px 0 15px 0;
   padding-bottom: 8px;
   border-bottom: 2px solid #334155;
@@ -376,7 +376,7 @@
 
 .visaInfoListItem {
   margin-bottom: 8px;
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1.6;
 }
 
@@ -386,14 +386,14 @@
   background: #0f172a;
   border-radius: 8px;
   border-left: 3px solid #3b82f6;
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1.6;
 }
 
 .visaInfoList strong,
 .visaInfoPoint strong,
 .visaInfoNumberedItem strong {
-  color: #f8fafc;
+  color: #e2e8f0;
   font-weight: 700;
 }
 
@@ -431,7 +431,7 @@
 
 .radioLabel {
   font-size: 1rem;
-  color: #cbd5e1;
+  color: #e2e8f0;
   font-weight: 500;
   cursor: pointer;
 }
@@ -497,7 +497,7 @@
 .searchOption {
   padding: 12px 20px;
   cursor: pointer;
-  color: #cbd5e1;
+  color: #e2e8f0;
   font-size: 1rem;
   transition: all 0.2s ease;
   border-bottom: 1px solid #334155;
@@ -701,7 +701,7 @@
 }
 
 .messageContent {
-  color: #cbd5e1;
+  color: #e2e8f0;
   line-height: 1.6;
   font-size: 1rem;
 }
@@ -804,7 +804,7 @@
 }
 
 .footerLink {
-  color: #cbd5e1;
+  color: #e2e8f0;
   text-decoration: none;
   transition: all 0.3s ease;
   display: flex;
@@ -832,7 +832,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #cbd5e1;
+  color: #e2e8f0;
   text-decoration: none;
   transition: all 0.3s ease;
   font-size: 1.2rem;
