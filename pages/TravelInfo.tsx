@@ -983,7 +983,7 @@ const TravelInfoDetails = () => {
       </div>
 
         {/* Transit Country Search */}
-        <div className={styles.searchContainer}>
+        <div className={`${styles.searchContainer} ${styles.searchContainerWithSpacing}`}>
         <label className={styles.label}>
           Transit country:
           {transitCountry && (
