@@ -23,6 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     transitCountry, 
     layoverDuration,
     willLeaveAirport,
+    secondTransitCountry,
+    secondLayoverDuration,
+    secondWillLeaveAirport,
     followUpQuestion,
     conversationId,
     conversationHistory = []
@@ -84,8 +87,34 @@ Useful travel websites to reference:
 
 Format your responses with clear sections and bullet points for easy reading.`;
 
+      // Check if there are multiple layovers
+      const hasMultipleLayovers = secondTransitCountry && secondLayoverDuration && secondWillLeaveAirport;
+      
       const airportStatus = willLeaveAirport === 'yes' ? 'plans to leave the airport' : 'will stay in the airport transit area';
-      const userPrompt = `A traveler with a ${passportFrom} passport is traveling from ${travelFrom} to ${travelTo} with a ${layoverDuration}-hour layover in ${transitCountry}. The traveler ${airportStatus}.
+      
+      let userPrompt = '';
+      
+      if (hasMultipleLayovers) {
+        // Multiple layovers scenario
+        const secondAirportStatus = secondWillLeaveAirport === 'yes' ? 'plans to leave the airport' : 'will stay in the airport transit area';
+        userPrompt = `A traveler with a ${passportFrom} passport is traveling from ${travelFrom} to ${travelTo} with TWO layovers:
+        
+FIRST LAYOVER: ${layoverDuration} hours in ${transitCountry} - The traveler ${airportStatus}.
+SECOND LAYOVER: ${secondLayoverDuration} hours in ${secondTransitCountry} - The traveler ${secondAirportStatus}.
+
+Please provide comprehensive information about BOTH layovers including:
+1. Whether a transit visa is required for EACH country
+2. Official application links if a visa is needed for each transit country
+3. Official documentation sources for verification
+4. Additional visa requirements and considerations for both countries
+5. Alternative options if no visa is required for either country
+6. Any special conditions or restrictions for each transit country
+7. Recommended actions and next steps
+
+IMPORTANT: You MUST provide separate, detailed visa information for BOTH ${transitCountry} and ${secondTransitCountry}.`;
+      } else {
+        // Single layover scenario
+        userPrompt = `A traveler with a ${passportFrom} passport is traveling from ${travelFrom} to ${travelTo} with a ${layoverDuration}-hour layover in ${transitCountry}. The traveler ${airportStatus}.
 
 Please provide comprehensive information about:
 1. Whether a transit visa is required
@@ -94,7 +123,11 @@ Please provide comprehensive information about:
 4. Additional visa requirements and considerations
 5. Alternative options if no visa is required
 6. Any special conditions or restrictions
-7. Recommended actions and next steps
+7. Recommended actions and next steps`;
+      }
+
+      // Add common resources section for both cases
+      const resourcesSection = `
 
 IMPORTANT: Also include practical travel resources:
 - Flight booking websites and price comparison tools
@@ -107,6 +140,8 @@ IMPORTANT: Also include practical travel resources:
 Please provide specific, clickable links to useful websites and services.
 
 IMPORTANT: At the end of your response, add a section titled "Suggested follow-up questions:" followed by 3-4 specific questions that the traveler might want to ask. Format each question on a new line starting with "- " (dash and space).`;
+
+      userPrompt += resourcesSection;
 
       messages = [
         { role: "system", content: systemPrompt },
