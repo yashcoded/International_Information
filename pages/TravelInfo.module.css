@@ -452,6 +452,10 @@
   margin-bottom: 25px;
 }
 
+.searchContainerWithSpacing {
+  margin-top: 24px;
+}
+
 .searchWrapper {
   position: relative;
   width: 100%;
