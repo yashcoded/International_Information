@@ -100,6 +100,8 @@
   align-items: center;
   justify-content: center;
   gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
 }
 
 .header span:not(.headerIcon) {
@@ -112,6 +114,29 @@
 .headerIcon {
   font-size: 2.5rem;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.requestCounter {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  padding: 8px 16px;
+  border-radius: 12px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.resetDate {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .formSection {

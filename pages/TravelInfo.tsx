@@ -5,6 +5,14 @@ import axios from 'axios';
 import Link from 'next/link';
 import styles from './TravelInfo.module.css';
 import NavbarPages from './_NavbarPages';
+import { 
+  getRequestData, 
+  incrementRequestCount, 
+  getRemainingRequests, 
+  hasReachedLimit,
+  formatResetDate,
+  REQUEST_LIMIT 
+} from '../lib/requestTracker';
 
 interface Country {
   cca3: string;
@@ -44,9 +52,9 @@ const TravelInfoDetails = () => {
   const [showSecondTransitDropdown, setShowSecondTransitDropdown] = useState<boolean>(false);
   const [secondTransitSelectedIndex, setSecondTransitSelectedIndex] = useState<number>(-1);
   
-  // Rate limiting
+  // Rate limiting from localStorage
   const [requestCount, setRequestCount] = useState<number>(0);
-  const MAX_REQUESTS = 5;
+  const [remainingRequests, setRemainingRequests] = useState<number>(REQUEST_LIMIT);
   
   // Offline detection
   const [isOnline, setIsOnline] = useState<boolean>(true);
@@ -313,6 +321,13 @@ const TravelInfoDetails = () => {
     };
   }, []);
 
+  // Load request tracking data from localStorage
+  useEffect(() => {
+    const data = getRequestData();
+    setRequestCount(data.count);
+    setRemainingRequests(getRemainingRequests());
+  }, []);
+
   // Fetch country data for the dropdowns
   useEffect(() => {
     const fetchCountries = async () => {
@@ -523,9 +538,9 @@ const TravelInfoDetails = () => {
       return;
     }
     
-    // Check rate limit
-    if (requestCount >= MAX_REQUESTS) {
-      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+    // Check rate limit from localStorage
+    if (hasReachedLimit()) {
+      setError(`You have reached the maximum of ${REQUEST_LIMIT} free requests. Your limit will reset on ${formatResetDate()}.`);
       return;
     }
     
@@ -579,8 +594,10 @@ const TravelInfoDetails = () => {
         // Add AI response to conversation history
         setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
         
-        // Increment request count
-        setRequestCount(prev => prev + 1);
+        // Increment request count in localStorage
+        const updatedData = incrementRequestCount();
+        setRequestCount(updatedData.count);
+        setRemainingRequests(getRemainingRequests());
         
       } catch (error) {
         console.error('Error fetching visa information:', error);
@@ -613,9 +630,9 @@ const TravelInfoDetails = () => {
       return;
     }
     
-    // Check rate limit
-    if (requestCount >= MAX_REQUESTS) {
-      setError(`You have reached the maximum of ${MAX_REQUESTS} requests. Please refresh the page to start a new session.`);
+    // Check rate limit from localStorage
+    if (hasReachedLimit()) {
+      setError(`You have reached the maximum of ${REQUEST_LIMIT} free requests. Your limit will reset on ${formatResetDate()}.`);
       return;
     }
     
@@ -640,8 +657,10 @@ const TravelInfoDetails = () => {
       // Add AI response to conversation history
       setConversationHistory(prev => [...prev, { role: 'assistant', content: response.data.visaInfo }]);
       
-      // Increment request count
-      setRequestCount(prev => prev + 1);
+      // Increment request count in localStorage
+      const updatedData = incrementRequestCount();
+      setRequestCount(updatedData.count);
+      setRemainingRequests(getRemainingRequests());
       
     } catch (error) {
       console.error('Error processing follow-up question:', error);
@@ -801,6 +820,10 @@ const TravelInfoDetails = () => {
         <h1 className={styles.header}>
           <span className={styles.headerIcon}>🌍</span>
           <span>International Travel Assistant</span>
+          <div className={styles.requestCounter}>
+            {remainingRequests} / {REQUEST_LIMIT} free requests
+            <span className={styles.resetDate}>Resets: {formatResetDate()}</span>
+          </div>
         </h1>
       
       {/* AI Agent Introduction */}
@@ -1191,23 +1214,23 @@ const TravelInfoDetails = () => {
             <div style={{ 
               textAlign: 'center', 
               marginBottom: '12px', 
-              color: requestCount >= MAX_REQUESTS ? '#ef4444' : '#94a3b8',
+              color: requestCount >= REQUEST_LIMIT ? '#ef4444' : '#94a3b8',
               fontSize: '0.9rem'
             }}>
-              Requests used: {requestCount} / {MAX_REQUESTS}
+              Requests used: {requestCount} / {REQUEST_LIMIT}
             </div>
           )}
           <button 
             onClick={handleSubmit} 
             className={styles.button}
-            disabled={isLoading || requestCount >= MAX_REQUESTS}
+            disabled={isLoading || requestCount >= REQUEST_LIMIT}
           >
             {isLoading ? (
               <>
                 <span className={styles.loadingSpinner}></span>
                 Processing...
               </>
-            ) : requestCount >= MAX_REQUESTS ? (
+            ) : requestCount >= REQUEST_LIMIT ? (
               'Request Limit Reached'
             ) : (
               'Get Travel Information'
