@@ -1,0 +1,7 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    // Keep strict in local, CI will report but not block builds
+  }
+}
+
