@@ -1,0 +1,500 @@
+/* Toggle Button */
+.toggleButton {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  z-index: 10000;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 28px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 
+    0 4px 12px rgba(59, 130, 246, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  min-width: 56px;
+  min-height: 56px;
+}
+
+.toggleButton:hover {
+  transform: scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(59, 130, 246, 0.5),
+    0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.toggleButton:active {
+  transform: scale(0.95);
+}
+
+.toggleButtonOpen {
+  left: 380px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border-radius: 50%;
+  padding: 0;
+  width: 56px;
+  height: 56px;
+}
+
+.buttonContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.buttonIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.toggleButtonOpen .buttonIcon {
+  font-size: 1.5rem;
+}
+
+.buttonLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: white;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -400px;
+  width: 380px;
+  height: 100vh;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  z-index: 9999;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.sidebarOpen {
+  left: 0;
+}
+
+/* Sidebar Header */
+.sidebarHeader {
+  padding: 24px 20px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebarTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+.sidebarSubtitle {
+  margin: 4px 0 0 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.newConversationBtn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.newConversationBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Session List */
+.sessionList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  scroll-behavior: smooth;
+}
+
+.sessionList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sessionList::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.sessionList::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 4px;
+}
+
+.sessionList::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.7);
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.emptyText {
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.emptySubtext {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Session Card */
+.sessionCard {
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sessionCard:hover {
+  background: linear-gradient(135deg, #3b4a5e 0%, #252f3f 100%);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.sessionCard:hover .sessionTitle,
+.sessionCard:hover .sessionPreview {
+  color: #f1f5f9;
+}
+
+.sessionCardActive {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.sessionCardActive:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  transform: translateX(2px);
+}
+
+/* Session Card Content */
+.sessionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sessionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.sessionCardActive .sessionTitle {
+  color: white;
+}
+
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.4);
+  border-color: rgba(239, 68, 68, 0.6);
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.sessionPreview {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.sessionCardActive .sessionPreview {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sessionFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.sessionCardActive .sessionFooter {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sessionMeta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sessionTime {
+  font-style: italic;
+}
+
+/* Light Theme */
+[data-theme='light'] .sidebar {
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  border-right-color: rgba(203, 213, 225, 0.8);
+}
+
+[data-theme='light'] .toggleButton {
+  box-shadow: 
+    0 4px 12px rgba(59, 130, 246, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='light'] .sessionCard {
+  background: white;
+  border-color: rgba(203, 213, 225, 0.6);
+}
+
+[data-theme='light'] .sessionCard:hover {
+  background: #f1f5f9;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+[data-theme='light'] .sessionCard:hover .sessionTitle {
+  color: #0f172a;
+}
+
+[data-theme='light'] .sessionCard:hover .sessionPreview {
+  color: #334155;
+}
+
+[data-theme='light'] .sessionCard:hover .sessionFooter {
+  color: #475569;
+}
+
+[data-theme='light'] .sessionCardActive {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-color: rgba(59, 130, 246, 0.8);
+}
+
+[data-theme='light'] .sessionTitle {
+  color: #1e293b;
+}
+
+[data-theme='light'] .sessionCardActive .sessionTitle {
+  color: white;
+}
+
+[data-theme='light'] .sessionPreview {
+  color: #475569;
+}
+
+[data-theme='light'] .sessionCardActive .sessionPreview {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='light'] .sessionFooter {
+  color: #64748b;
+}
+
+[data-theme='light'] .sessionCardActive .sessionFooter {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme='light'] .sidebarHeader {
+  border-bottom-color: rgba(203, 213, 225, 0.8);
+}
+
+[data-theme='light'] .sidebarTitle {
+  color: #1e293b;
+}
+
+[data-theme='light'] .newChatBtn {
+  background: #3b82f6;
+  color: white;
+}
+
+[data-theme='light'] .newChatBtn:hover {
+  background: #2563eb;
+}
+
+[data-theme='light'] .emptyText {
+  color: #1e293b;
+}
+
+[data-theme='light'] .emptySubtext {
+  color: #64748b;
+}
+
+[data-theme='light'] .deleteBtn {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
+[data-theme='light'] .deleteBtn:hover {
+  background: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #991b1b;
+}
+
+[data-theme='light'] .emptySubtext {
+  color: #64748b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+  }
+  
+  .toggleButton {
+    left: 16px;
+    top: 80px;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 8px 12px;
+  }
+  
+  .buttonIcon {
+    font-size: 1.2rem;
+  }
+  
+  .buttonLabel {
+    font-size: 0.65rem;
+  }
+  
+  .toggleButtonOpen {
+    left: calc(100% - 76px);
+    width: 48px;
+    height: 48px;
+  }
+  
+  .sidebarHeader {
+    padding: 20px 16px;
+  }
+  
+  .sidebarTitle {
+    font-size: 1.1rem;
+  }
+  
+  .sessionList {
+    padding: 12px;
+  }
+}
+

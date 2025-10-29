@@ -10,11 +10,9 @@ const About: React.FC = () => {
 
       <div className={styles.container}>
         <div className={styles.heroSection}>
-          <h1 className={styles.title}>
-            <span className={styles.emoji}>✈️</span> About This Project
-          </h1>
+          <h1 className={styles.title}>About This Project</h1>
           <p className={styles.subtitle}>
-            Born from confusion, built with code, powered by trauma 😅
+            Born from confusion, built to help travelers navigate visa requirements
           </p>
         </div>
 

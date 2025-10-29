@@ -16,6 +16,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
+  // Fast path for e2e tests to avoid slow OpenAI calls
+  if (process.env.NEXT_PUBLIC_TEST_MODE === '1') {
+    const { conversationId } = req.body || {};
+    const quickId = conversationId || `conv_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    return res.status(200).json({
+      visaInfo: 'Test mode: stubbed visa info response for fast E2E.\n\n- Transit visa not required for short stays.\n- Always verify with official sources.',
+      conversationId: quickId,
+      suggestions: [
+        'Do I need any additional documents?',
+        'What are the transit area rules?',
+        'How long can I stay without a visa?'
+      ]
+    });
+  }
+
   const { 
     passportFrom, 
     travelFrom, 

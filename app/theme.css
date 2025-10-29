@@ -159,17 +159,19 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
-  overflow-x: hidden;
+  min-height: 100%;
 }
 
 html {
   background: #0f172a;
+  overflow-x: hidden;
 }
 
 body {
   background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
 html[data-theme='light'] {

@@ -138,7 +138,7 @@ export default function Home() {
         
         <div className={styles.footerBottom}>
           <p className={styles.footerCopyright}>
-            © {new Date().getFullYear()} Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash</a>. All rights reserved.
+            © 2025 Travel Info. Built with ❤️ by <a href="https://yashcoded.com" target="_blank" rel="noopener noreferrer">Yash Bhatia</a>. All rights reserved.
           </p>
         </div>
       </footer>
