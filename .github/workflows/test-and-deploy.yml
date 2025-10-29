@@ -52,6 +52,7 @@ jobs:
         run: pnpm run test
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NEXT_PUBLIC_TEST_MODE: '1'
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
