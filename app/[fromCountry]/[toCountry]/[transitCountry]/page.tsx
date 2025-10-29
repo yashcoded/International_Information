@@ -287,7 +287,8 @@ const TravelInfoDetails = () => {
     };
 
     fetchCountries();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // staticCountries is intentionally excluded - it's a constant
 
   // Handle form submission with AI agent functionality
   const handleSubmit = async () => {
@@ -458,7 +459,7 @@ const TravelInfoDetails = () => {
       <div className={styles.aiAgentContainer}>
         <div className={styles.aiAgentTitle}>🤖 AI Travel Agent</div>
         <div className={styles.aiAgentDescription}>
-          I'm your intelligent travel assistant. I can help you understand visa requirements, 
+          I&apos;m your intelligent travel assistant. I can help you understand visa requirements, 
           provide travel advice, and answer follow-up questions about your journey.
         </div>
       </div>

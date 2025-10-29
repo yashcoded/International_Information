@@ -445,7 +445,8 @@ const TravelInfoDetails = () => {
     };
 
     fetchCountries();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // staticCountries is intentionally excluded - it's a constant
 
   // Filter countries based on search term
   const getFilteredCountries = (searchTerm: string) => {
@@ -1467,7 +1468,7 @@ const TravelInfoDetails = () => {
         {/* Offline Status Indicator */}
         {!isOnline && (
           <div className={styles.offlineIndicator}>
-            📡 You're currently offline. Some features may not work properly.
+            📡 You&apos;re currently offline. Some features may not work properly.
           </div>
         )}
         
@@ -1601,7 +1602,7 @@ const TravelInfoDetails = () => {
               AI-powered travel assistant providing accurate visa and transit information for international travelers.
             </p>
             <p className={styles.footerText}>
-              Born from a confused student's layover nightmare, built to help you travel stress-free.
+              Born from a confused student&apos;s layover nightmare, built to help you travel stress-free.
             </p>
           </div>
           

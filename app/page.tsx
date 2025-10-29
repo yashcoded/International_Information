@@ -101,7 +101,7 @@ export default function Home() {
               AI-powered travel assistant providing accurate visa and transit information for international travelers.
             </p>
             <p className={styles.footerText}>
-              Born from a confused student's layover nightmare, built to help you travel stress-free.
+              Born from a confused student&apos;s layover nightmare, built to help you travel stress-free.
             </p>
           </div>
           

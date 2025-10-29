@@ -22,17 +22,17 @@ const About: React.FC = () => {
             <h2 className={styles.sectionTitle}>🎬 The Origin Story</h2>
             <div className={styles.card}>
               <p className={styles.text}>
-                Picture this: It's 2024. I'm an international student in the United States, 
+                Picture this: It&apos;s 2024. I&apos;m an international student in the United States, 
                 excited to fly back home to India for the holidays. Simple, right? 
                 <strong> Wrong.</strong>
               </p>
               <p className={styles.text}>
                 My flight had a <em>20-hour layover in Germany</em>. Twenty. Hours. 
-                That's basically a full day in a country I wasn't even trying to visit! 
-                Naturally, I wondered: <strong>"Do I need a visa for this?"</strong>
+                That&apos;s basically a full day in a country I wasn&apos;t even trying to visit! 
+                Naturally, I wondered: <strong>&quot;Do I need a visa for this?&quot;</strong>
               </p>
               <p className={styles.textHighlight}>
-                🤔 <em>Spoiler alert: The answer should've been simple. It was not.</em>
+                🤔 <em>Spoiler alert: The answer should&apos;ve been simple. It was not.</em>
               </p>
             </div>
           </section>
@@ -60,7 +60,7 @@ const About: React.FC = () => {
                 </div>
                 <div className={styles.bulletItem}>
                   <span className={styles.bulletIcon}>🤷</span>
-                  <span>One site said "Yes visa needed!" Another said "No visa if transit area!"</span>
+                  <span>One site said &quot;Yes visa needed!&quot; Another said &quot;No visa if transit area!&quot;</span>
                 </div>
               </div>
               <p className={styles.text}>
@@ -68,15 +68,15 @@ const About: React.FC = () => {
                 <strong> I emailed EVERYONE.</strong>
               </p>
               <p className={styles.text}>
-                The German embassy. My university's international office. My airline. 
-                Random travel agencies. That one friend who "totally went through Germany once."
+                The German embassy. My university&apos;s international office. My airline. 
+                Random travel agencies. That one friend who &quot;totally went through Germany once.&quot;
               </p>
               <p className={styles.textHighlight}>
-                💡 <strong>The answer?</strong> "No visa needed if you stay in the transit area."
+                💡 <strong>The answer?</strong> &quot;No visa needed if you stay in the transit area.&quot;
               </p>
               <p className={styles.text}>
-                That's it. Four hours of research, twelve emails, and three minor panic attacks 
-                later, I had my answer. And I thought: <em>"There has to be a better way."</em>
+                That&apos;s it. Four hours of research, twelve emails, and three minor panic attacks 
+                later, I had my answer. And I thought: <em>&quot;There has to be a better way.&quot;</em>
               </p>
             </div>
           </section>
@@ -121,11 +121,11 @@ const About: React.FC = () => {
             <h2 className={styles.sectionTitle}>👨‍💻 About Me</h2>
             <div className={styles.card}>
               <p className={styles.text}>
-                Hi! I'm <strong>Yash Bhatia</strong>, a software developer, international student, 
+                Hi! I&apos;m <strong>Yash Bhatia</strong>, a software developer, international student, 
                 and occasional victim of confusing travel regulations.
               </p>
               <p className={styles.text}>
-                When I'm not building tools to solve my own problems, I'm probably:
+                When I&apos;m not building tools to solve my own problems, I&apos;m probably:
               </p>
               <div className={styles.bulletList}>
                 <div className={styles.bulletItem}>
@@ -138,7 +138,7 @@ const About: React.FC = () => {
                 </div>
                 <div className={styles.bulletItem}>
                   <span className={styles.bulletIcon}>🎮</span>
-                  <span>Pretending I'll finish that side project (spoiler: I won't)</span>
+                  <span>Pretending I&apos;ll finish that side project (spoiler: I won&apos;t)</span>
                 </div>
                 <div className={styles.bulletItem}>
                   <span className={styles.bulletIcon}>✈️</span>
@@ -192,7 +192,7 @@ const About: React.FC = () => {
               AI-powered travel assistant providing accurate visa and transit information for international travelers.
             </p>
             <p className={styles.footerText}>
-              Born from a confused student's layover nightmare, built to help you travel stress-free.
+              Born from a confused student&apos;s layover nightmare, built to help you travel stress-free.
             </p>
           </div>
           
