@@ -1,4 +1,5 @@
 import NavbarClient from './NavbarClient';
+import '@primer/css/dist/primer.css';
 
 export const metadata = {
   title: 'International Travel Information - AI-Powered Visa Assistant',

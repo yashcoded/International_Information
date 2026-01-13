@@ -1335,7 +1335,7 @@ const TravelInfoDetails = () => {
       {layoverType === 'multiple' && (
         <>
           {/* Divider between layovers */}
-          <div style={{ margin: '40px 0 20px 0', borderTop: '2px solid #334155' }} />
+          <div style={{ margin: '40px 0 20px 0', borderTop: '1px solid #30363d' }} />
           
           {/* Second Transit Country Search */}
           <div className={styles.searchContainer}>
