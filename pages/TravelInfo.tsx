@@ -22,11 +22,39 @@ interface Country {
   };
 }
 
+interface AgentPlanStep {
+  id: number;
+  action: string;
+  input: Record<string, unknown>;
+}
+
+interface AgentPlan {
+  goal: string;
+  steps: AgentPlanStep[];
+}
+
+interface AgentStepResult {
+  id: number;
+  action: string;
+  input: Record<string, unknown>;
+  summary: string;
+}
+
 interface VisaInfoResponse {
   visaInfo: string;
   conversationId?: string;
   suggestions?: string[];
+  plan?: AgentPlan;
+  stepResults?: AgentStepResult[];
 }
+
+const DID_YOU_KNOW_FACTS = [
+  'Many countries allow short airside transits without a visa if you stay inside the international zone.',
+  'Booking separate tickets can change how immigration treats your layover—sometimes you must clear border control.',
+  'Some airports offer short-stay transit tours that require you to clear immigration and may need a visa.',
+  'Travel insurance can sometimes be required for visa issuance or entry in certain countries.',
+  'Staying in the airport transit area overnight can still trigger visa rules if you change terminals or airlines.',
+];
 
 const TravelInfoDetails = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -37,6 +65,7 @@ const TravelInfoDetails = () => {
   const [layoverDuration, setLayoverDuration] = useState<string>('');
   const [visaInfo, setVisaInfo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPlanning, setIsPlanning] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -59,6 +88,8 @@ const TravelInfoDetails = () => {
   // Rate limiting from localStorage
   const [requestCount, setRequestCount] = useState<number>(0);
   const [remainingRequests, setRemainingRequests] = useState<number>(REQUEST_LIMIT);
+  const [agentPlan, setAgentPlan] = useState<AgentPlan | null>(null);
+  const [agentStepResults, setAgentStepResults] = useState<AgentStepResult[]>([]);
 
   // Auto-scroll to latest message when conversation updates
   useEffect(() => {
@@ -639,6 +670,7 @@ const TravelInfoDetails = () => {
     
     if (hasRequiredFields && hasMultipleLayoverFields) {
       setIsLoading(true);
+      setIsPlanning(true);
       setError(null);
       
       const airportStatus = willLeaveAirport === 'yes' ? 'plan to leave the airport' : 'will stay in the airport transit area';
@@ -681,6 +713,8 @@ const TravelInfoDetails = () => {
         setVisaInfo(response.data.visaInfo);
         setConversationId(response.data.conversationId || null);
         setSuggestions(response.data.suggestions || []);
+        setAgentPlan(response.data.plan || null);
+        setAgentStepResults(response.data.stepResults || []);
         
         // Add AI response to conversation history (use historyWithUserQuery which already has the user message)
         const updatedHistory: Array<{role: 'user' | 'assistant', content: string}> = [...historyWithUserQuery, { role: 'assistant' as const, content: response.data.visaInfo }];
@@ -710,6 +744,7 @@ const TravelInfoDetails = () => {
         }
       } finally {
         setIsLoading(false);
+        setIsPlanning(false);
       }
     } else {
       if (layoverType === 'multiple' && (!secondTransitCountry || !secondLayoverDuration || !secondWillLeaveAirport)) {
@@ -736,6 +771,7 @@ const TravelInfoDetails = () => {
     
     console.log('Follow-up question clicked:', question);
     setIsLoading(true);
+    setIsPlanning(true);
     setError(null);
     
     // Add user question to conversation history
@@ -753,6 +789,8 @@ const TravelInfoDetails = () => {
       setVisaInfo(response.data.visaInfo);
       setConversationId(response.data.conversationId || null);
       setSuggestions(response.data.suggestions || []);
+      setAgentPlan(response.data.plan || null);
+      setAgentStepResults(response.data.stepResults || []);
       
       // Add AI response to conversation history (use historyWithQuestion which already has the user question)
       const updatedHistory: Array<{role: 'user' | 'assistant', content: string}> = [...historyWithQuestion, { role: 'assistant' as const, content: response.data.visaInfo }];
@@ -782,6 +820,7 @@ const TravelInfoDetails = () => {
       }
     } finally {
       setIsLoading(false);
+      setIsPlanning(false);
     }
   };
 
@@ -871,6 +910,8 @@ const TravelInfoDetails = () => {
     setVisaInfo(null);
     setSuggestions([]);
     setConversationId(null);
+    setAgentPlan(null);
+    setAgentStepResults([]);
     
     // Clear form fields
     setPassportFrom('');
@@ -1062,6 +1103,9 @@ const TravelInfoDetails = () => {
         </div>
       )}
 
+      {/* Main layout: form + conversation (desktop: two-column, mobile: stacked) */}
+      <div className={styles.mainLayout}>
+      <div className={styles.formColumn}>
       {/* Form Section */}
       <div className={styles.formSection}>
         {/* Passport From Country Search */}
@@ -1455,7 +1499,7 @@ const TravelInfoDetails = () => {
             {isLoading ? (
               <>
                 <span className={styles.loadingSpinner}></span>
-                Processing...
+                {isPlanning ? 'Planning your trip...' : 'Processing...'}
               </>
             ) : requestCount >= REQUEST_LIMIT ? (
               'Request Limit Reached'
@@ -1464,6 +1508,47 @@ const TravelInfoDetails = () => {
             )}
       </button>
         </div>
+
+        {/* Planning state helper */}
+        {isPlanning && (
+          <div className={styles.didYouKnow}>
+            <div className={styles.didYouKnowLabel}>Did you know?</div>
+            <div className={styles.didYouKnowText}>
+              {DID_YOU_KNOW_FACTS[requestCount % DID_YOU_KNOW_FACTS.length]}
+            </div>
+          </div>
+        )}
+
+        {/* Agent planning status */}
+        {agentPlan && (
+          <div className={styles.agentPlanStatus}>
+            <div className={styles.agentPlanHeader}>
+              <span className={styles.agentPlanTitle}>AI Travel Agent plan</span>
+              <span className={styles.agentPlanSteps}>
+                {agentPlan.steps.length} step{agentPlan.steps.length === 1 ? '' : 's'}
+              </span>
+            </div>
+            <ul className={styles.agentPlanList}>
+              {agentPlan.steps.map((step) => {
+                const result = agentStepResults.find((r) => r.id === step.id);
+                const isCompleted = !!result;
+                return (
+                  <li
+                    key={step.id}
+                    className={`${styles.agentPlanItem} ${isCompleted ? styles.agentPlanItemCompleted : ''}`}
+                  >
+                    <span className={styles.agentPlanBullet}>
+                      {isCompleted ? '✓' : '•'}
+                    </span>
+                    <span className={styles.agentPlanText}>
+                      <strong>{step.action}</strong>
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
 
         {/* Offline Status Indicator */}
         {!isOnline && (
@@ -1479,10 +1564,12 @@ const TravelInfoDetails = () => {
           </div>
         )}
       </div>
+      </div>
 
-      {/* Visa Information Display */}
+      {/* Visa Information Display / Conversation Panel */}
+      <div className={styles.chatColumn}>
       {/* Chat Interface */}
-      {conversationHistory.length > 0 && (
+      {conversationHistory.length > 0 ? (
         <div className={styles.chatContainer}>
           <div className={styles.chatHeader}>
             <div className={styles.chatHeaderLeft}>
@@ -1589,7 +1676,23 @@ const TravelInfoDetails = () => {
             </button>
           )}
         </div>
+      ) : (
+        <div className={styles.chatPlaceholder}>
+          <div className={styles.chatPlaceholderHeader}>
+            <h2 className={styles.chatPlaceholderTitle}>Your AI travel agent</h2>
+            <p className={styles.chatPlaceholderSubtitle}>
+              Fill in your trip details on the left and I&apos;ll plan your route, check visa rules, and share practical tips.
+            </p>
+          </div>
+          <ul className={styles.chatPlaceholderList}>
+            <li>See whether you&apos;ll need a transit or entry visa.</li>
+            <li>Get a clear, structured explanation of the rules.</li>
+            <li>Ask follow-up questions in this conversation panel.</li>
+          </ul>
+        </div>
       )}
+      </div>
+      </div>
 
       </div>
       
