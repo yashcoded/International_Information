@@ -60,6 +60,12 @@ export default function NavbarClient() {
             Get Information
           </Link>
           <Link 
+            href="/TripPlanner" 
+            className={`${styles.navLink} ${isActive('/TripPlanner') ? styles.navLinkActive : ''}`}
+          >
+            Trip Planner
+          </Link>
+          <Link 
             href="/About" 
             className={`${styles.navLink} ${isActive('/About') ? styles.navLinkActive : ''}`}
           >
@@ -109,6 +115,14 @@ export default function NavbarClient() {
           >
             <span className={styles.mobileNavIcon}>✈️</span>
             Get Information
+          </Link>
+          <Link 
+            href="/TripPlanner" 
+            className={`${styles.mobileNavLink} ${isActive('/TripPlanner') ? styles.mobileNavLinkActive : ''}`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span className={styles.mobileNavIcon}>🧭</span>
+            Trip Planner
           </Link>
           <Link 
             href="/About" 

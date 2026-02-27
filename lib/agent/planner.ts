@@ -40,14 +40,15 @@ JSON schema:
 }
 
 Guidance:
-- Think in terms of concrete actions like:
-  - "check_visa"
-  - "generate_itinerary"
-  - "estimate_budget"
-  - "travel_tips"
+- First, understand the user's high-level goal (e.g. "plan a 10 day trip to Italy in spring").
+- Then decompose it into concrete actions such as:
+  - "check_visa"            (visa and transit rules)
+  - "generate_itinerary"    (day-by-day or high level plan)
+  - "estimate_budget"       (rough cost ranges)
+  - "travel_tips"           (practical tips and cautions)
 - Always start ids at 1 and increment by 1.
 - The "input" object should contain any structured fields you know
-  (e.g. passport country, origin, destination, duration in days).
+  (e.g. passport country, origin, destination, duration in days, travel style, interests).
 `.trim();
 
 export async function createPlan(

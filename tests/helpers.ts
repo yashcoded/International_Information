@@ -34,6 +34,59 @@ export async function mockVisaInfo(page: Page) {
   });
 }
 
+/**
+ * Mock the trip planning API to return a fast stubbed response
+ */
+export async function mockTripPlan(page: Page) {
+  await page.route('**/api/plan-trip', async (route) => {
+    const postData = route.request().postDataJSON() as any;
+    const goalText = postData?.goalText || 'Plan a short sample trip.';
+
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        finalText: `Stubbed trip plan for testing.\n\nYou asked: "${goalText}".`,
+        plan: {
+          goal: goalText,
+          steps: [
+            { id: 1, action: 'check_visa', input: {} },
+            { id: 2, action: 'generate_itinerary', input: {} },
+            { id: 3, action: 'estimate_budget', input: {} },
+            { id: 4, action: 'travel_tips', input: {} },
+          ],
+        },
+        steps: [
+          {
+            id: 1,
+            action: 'check_visa',
+            input: {},
+            summary: 'Stubbed visa check.',
+          },
+          {
+            id: 2,
+            action: 'generate_itinerary',
+            input: {},
+            summary: 'Stubbed itinerary.',
+          },
+          {
+            id: 3,
+            action: 'estimate_budget',
+            input: {},
+            summary: 'Stubbed budget.',
+          },
+          {
+            id: 4,
+            action: 'travel_tips',
+            input: {},
+            summary: 'Stubbed tips.',
+          },
+        ],
+      }),
+    });
+  });
+}
+
 /** Ensure a stubbed conversation exists in localStorage (user + assistant) */
 export async function ensureStubbedConversation(page: Page) {
   await page.evaluate(() => {

@@ -13,6 +13,15 @@ test.describe('Navigation', () => {
     await expect(page.url()).toContain('TravelInfo');
     await expect(page.locator('h1')).toContainText(/Visa Information/i);
 
+    // Navigate to Trip Planner page (if present)
+    const plannerLink = page.locator('a[href*="TripPlanner"]').first();
+    if (await plannerLink.count()) {
+      await plannerLink.click();
+      await page.waitForLoadState('networkidle');
+      // At least ensure we landed on a page with a visible heading
+      await expect(page.locator('h1').first()).toBeVisible();
+    }
+
     // Navigate to About page if present
     const aboutLink = page.locator('a[href*="About"]').first();
     if (await aboutLink.count()) {
@@ -41,6 +50,10 @@ test.describe('Navigation', () => {
     await page.goto('/TravelInfo');
     await expect(navbar).toBeVisible();
 
+    // Check on TripPlanner page
+    await page.goto('/TripPlanner');
+    await expect(navbar).toBeVisible();
+
     // Check on About page
     await page.goto('/About');
     await expect(navbar).toBeVisible();
@@ -63,6 +76,7 @@ test.describe('Navigation', () => {
     // Check all nav links are present (use .first() for multiple matches)
     await expect(page.locator('a[href="/"]').first()).toBeVisible();
     await expect(page.locator('a[href*="TravelInfo"]').first()).toBeVisible();
+    await expect(page.locator('a[href*="TripPlanner"]').first()).toBeVisible();
     await expect(page.locator('a[href*="About"]').first()).toBeVisible();
   });
 
