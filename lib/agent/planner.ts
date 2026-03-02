@@ -5,6 +5,7 @@ export type PlannerAction =
   | 'generate_itinerary'
   | 'estimate_budget'
   | 'travel_tips'
+  | 'get_weather'
   | string;
 
 export interface PlannerStep {
@@ -46,6 +47,7 @@ Guidance:
   - "generate_itinerary"    (day-by-day or high level plan)
   - "estimate_budget"       (rough cost ranges)
   - "travel_tips"           (practical tips and cautions)
+  - "get_weather"           (7-day weather forecast)
 - Always start ids at 1 and increment by 1.
 - The "input" object should contain any structured fields you know
   (e.g. passport country, origin, destination, duration in days, travel style, interests).

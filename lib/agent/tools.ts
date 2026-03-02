@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import axios from 'axios';
 import type { AgentMemory } from './memory';
 
 export interface TravelContext {
@@ -330,6 +331,64 @@ Keep it concise and skimmable.`;
   };
 }
 
+async function weatherForecastTool(
+  input: Record<string, unknown>,
+  context: ToolContext
+): Promise<ToolResult> {
+  const travel = context.travelContext ?? {};
+  const destination = (input.destination as string) || travel.travelTo || '';
+
+  if (!destination) {
+    return { summary: 'No destination provided for weather check.' };
+  }
+
+  try {
+    // 1. Geocode the destination
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(destination)}&count=1&language=en&format=json`;
+    const geoRes = await axios.get(geoUrl);
+    
+    if (!geoRes.data.results || geoRes.data.results.length === 0) {
+      return { summary: `Could not find weather data for ${destination}.` };
+    }
+
+    const { latitude, longitude, name, country } = geoRes.data.results[0];
+
+    // 2. Get Weather Forecast
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=7`;
+    const weatherRes = await axios.get(weatherUrl);
+    const daily = weatherRes.data.daily;
+
+    // 3. Format Summary
+    let summary = `Weather forecast for **${name}, ${country || ''}** (next 7 days):\n\n`;
+    
+    if (daily && daily.time) {
+      for (let i = 0; i < Math.min(5, daily.time.length); i++) { // Show 5 days
+        const date = daily.time[i];
+        const maxTemp = daily.temperature_2m_max[i];
+        const minTemp = daily.temperature_2m_min[i];
+        const precip = daily.precipitation_probability_max[i];
+        
+        summary += `- **${date}**: High ${maxTemp}°C, Low ${minTemp}°C, 🌧️ ${precip}% rain\n`;
+      }
+    } else {
+      summary += 'No daily forecast data available.';
+    }
+
+    summary += `\n*Data provided by Open-Meteo*`;
+
+    return {
+      summary,
+      data: weatherRes.data
+    };
+
+  } catch (error) {
+    return { 
+      summary: `Failed to fetch weather for ${destination}. (External API Error)`,
+      data: error
+    };
+  }
+}
+
 export async function callTool(
   action: string,
   input: Record<string, unknown>,
@@ -345,6 +404,8 @@ export async function callTool(
       return budgetEstimatorTool(input, context);
     case 'travel_tips':
       return travelTipsTool(input, context);
+    case 'get_weather':
+      return weatherForecastTool(input, context);
     default:
       return {
         summary: `No tool implemented for action "${action}".`,
@@ -425,5 +486,18 @@ export const openAiToolDefinitions = [
       },
     },
   },
+  {
+    type: 'function' as const,
+    function: {
+      name: 'get_weather',
+      description: 'Get the 7-day weather forecast for a specific city or destination.',
+      parameters: {
+        type: 'object',
+        properties: {
+          destination: { type: 'string', description: 'City name to check weather for' },
+        },
+        required: ['destination'],
+      },
+    },
+  },
 ];
-
