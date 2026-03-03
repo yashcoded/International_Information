@@ -33,12 +33,12 @@ test.describe('Trip Planner', () => {
 
     await page.locator('button:has-text("Plan my trip")').click();
 
-    // Steps list should appear
-    const stepsList = page.locator('text=/Plan steps/i');
-    await expect(stepsList).toBeVisible();
+    // Result panel should appear with "Your plan" header
+    const planHeader = page.locator('text=/Your plan/i');
+    await expect(planHeader).toBeVisible();
 
-    // Check at least one step is rendered
-    const stepItems = page.locator('li:has-text("check_visa"), li:has-text("generate_itinerary")');
+    // Check at least one step tab is rendered (labels use spaces: "check visa", "generate itinerary")
+    const stepItems = page.locator('button:has-text("check visa"), button:has-text("generate itinerary")');
     await expect(stepItems.first()).toBeVisible();
 
     // Summary should include stubbed text

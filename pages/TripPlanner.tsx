@@ -1,10 +1,12 @@
 'use client';
 
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import NavbarPages from './_NavbarPages';
 import styles from './TripPlanner.module.css';
+import { TripRouteAnimation } from '../components/TripRouteAnimation';
 import { COUNTRIES, type Country } from '../lib/countries';
 
 interface AgentPlanStep {
@@ -34,6 +36,21 @@ interface PlanTripResponse {
 const STORAGE_KEY_PLAN = 'tripPlanner:lastPlan';
 const STORAGE_KEY_RESULT = 'tripPlanner:lastResult';
 
+const STEP_ICONS: Record<string, string> = {
+  check_visa: '🛂',
+  generate_itinerary: '📅',
+  estimate_budget: '💰',
+  travel_tips: '💡',
+  get_weather: '🌤️',
+  convert_currency: '💱',
+  get_local_time: '🕐',
+  check_public_holidays: '📆',
+};
+
+function getStepIcon(action: string): string {
+  return STEP_ICONS[action] ?? '✓';
+}
+
 export default function TripPlanner() {
   const [goalText, setGoalText] = useState('');
   const [from, setFrom] = useState('');
@@ -52,6 +69,7 @@ export default function TripPlanner() {
 
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
+  const [selectedReviewTab, setSelectedReviewTab] = useState<string>('overview');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -95,6 +113,13 @@ export default function TripPlanner() {
       // ignore
     }
   }, []);
+
+  useEffect(() => {
+    if (agentPlan && selectedReviewTab !== 'overview') {
+      const exists = agentPlan.steps.some((s) => String(s.id) === selectedReviewTab);
+      if (!exists) setSelectedReviewTab('overview');
+    }
+  }, [agentPlan, selectedReviewTab]);
 
   const handlePlanTrip = async () => {
     if (!goalText.trim()) {
@@ -346,10 +371,11 @@ export default function TripPlanner() {
 
           <div className={styles.rightColumn}>
             {agentPlan ? (
-              <div className={styles.card}>
+              <div className={styles.resultCard}>
                 <div className={styles.stepsHeader}>
+                  <span className={styles.stepsHeaderIcon}>✈️</span>
                   <div>
-                    <div className={styles.stepsTitle}>Plan steps</div>
+                    <div className={styles.stepsTitle}>Your plan</div>
                     <div className={styles.stepsMeta}>
                       {agentPlan.steps.length} step
                       {agentPlan.steps.length === 1 ? '' : 's'} ·{' '}
@@ -357,34 +383,94 @@ export default function TripPlanner() {
                     </div>
                   </div>
                 </div>
-                <ul className={styles.stepsList}>
+
+                <TripRouteAnimation from={from} to={to} />
+
+                <div className={styles.reviewTabs}>
+                  <button
+                    type="button"
+                    className={`${styles.reviewTab} ${selectedReviewTab === 'overview' ? styles.reviewTabActive : ''}`}
+                    onClick={() => setSelectedReviewTab('overview')}
+                    aria-pressed={selectedReviewTab === 'overview'}
+                  >
+                    <span className={styles.reviewTabIcon}>📋</span>
+                    <span className={styles.reviewTabLabel}>Overview</span>
+                  </button>
                   {agentPlan.steps.map((step) => {
                     const result = agentStepResults.find((r) => r.id === step.id);
-                    const completed = !!result;
+                    const isActive = selectedReviewTab === String(step.id);
                     return (
-                      <li
+                      <button
                         key={step.id}
-                        className={`${styles.stepItem} ${
-                          completed ? styles.stepItemCompleted : ''
-                        }`}
+                        type="button"
+                        className={`${styles.reviewTab} ${isActive ? styles.reviewTabActive : ''}`}
+                        onClick={() => setSelectedReviewTab(String(step.id))}
+                        aria-pressed={isActive}
+                        title={step.action.replace(/_/g, ' ')}
                       >
-                        <span className={styles.stepBullet}>{completed ? '✓' : step.id}</span>
-                        <span>
-                          <span className={styles.stepAction}>{step.action}</span>
+                        <span className={styles.reviewTabIcon}>
+                          {result ? getStepIcon(step.action) : step.id}
                         </span>
-                      </li>
+                        <span className={styles.reviewTabLabel}>
+                          {step.action.replace(/_/g, ' ')}
+                        </span>
+                      </button>
                     );
                   })}
-                </ul>
+                </div>
 
-                {finalSummary && (
-                  <div className={styles.summaryCard}>
-                    <div className={styles.summaryTitle}>Trip overview</div>
-                    <div className={styles.summaryText}>
-                      <ReactMarkdown>{finalSummary}</ReactMarkdown>
-                    </div>
-                  </div>
-                )}
+                <div className={styles.reviewContent}>
+                  {selectedReviewTab === 'overview' &&
+                    (finalSummary || agentStepResults.some((s) => s.summary)) && (
+                      <div className={styles.summaryCard}>
+                        <div className={styles.summaryHeader}>
+                          <span className={styles.summaryIcon}>📋</span>
+                          <span className={styles.summaryTitle}>Trip overview</span>
+                        </div>
+                        <div className={styles.summaryText}>
+                          {finalSummary ? (
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>{finalSummary}</ReactMarkdown>
+                          ) : (
+                            <ul className={styles.stepSummaryList}>
+                              {agentStepResults
+                                .filter((s) => s.summary)
+                                .map((s) => (
+                                  <li key={s.id}>
+                                    <strong>{s.action.replace(/_/g, ' ')}:</strong>{' '}
+                                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{s.summary}</ReactMarkdown>
+                                  </li>
+                                ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  {selectedReviewTab !== 'overview' &&
+                    agentPlan.steps
+                      .filter((s) => String(s.id) === selectedReviewTab)
+                      .map((step) => {
+                        const result = agentStepResults.find((r) => r.id === step.id);
+                        return (
+                          <div key={step.id} className={styles.summaryCard}>
+                            <div className={styles.summaryHeader}>
+                              <span className={styles.summaryIcon}>
+                                {getStepIcon(step.action)}
+                              </span>
+                              <span className={styles.summaryTitle}>
+                                {step.action.replace(/_/g, ' ')}
+                              </span>
+                            </div>
+                            <div className={styles.summaryText}>
+                              {result?.summary ? (
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.summary}</ReactMarkdown>
+                              ) : (
+                                <p className={styles.reviewEmpty}>No details for this step yet.</p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                </div>
               </div>
             ) : (
               <div className={styles.placeholder}>
@@ -399,6 +485,8 @@ export default function TripPlanner() {
                   <li>Estimate a rough budget with key cost categories.</li>
                   <li>Share practical tips for airports, packing, and safety.</li>
                 </ul>
+
+                <TripRouteAnimation from={from} to={to} />
               </div>
             )}
           </div>
