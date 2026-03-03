@@ -6,8 +6,10 @@ Here’s how to play nicely with others.
 ### 1. Fork and clone
 
 ```bash
-git fork https://github.com/yashcoded/International_Information.git
-git clone <your-fork-url>
+# First, fork the repo using the GitHub UI:
+#   https://github.com/yashcoded/International_Information
+# Then clone your fork:
+git clone https://github.com/<your-username>/International_Information.git
 cd International_Information
 ```
 

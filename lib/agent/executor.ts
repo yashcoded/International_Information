@@ -55,11 +55,8 @@ async function executeStep(
       attempts++;
       const result = await callTool(step.action, step.input, toolContext, memory);
       
-      // If the result summary contains an explicit error message (from our tools), try again
-      if (
-        result.summary.includes('(External API Error)') || 
-        result.summary.includes('Failed to fetch')
-      ) {
+      // If the tool returned a structured external API error, retry
+      if ((result.data as Record<string, unknown> | undefined)?.errorType === 'external_api') {
          throw new Error(result.summary);
       }
       
