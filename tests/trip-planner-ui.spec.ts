@@ -44,15 +44,15 @@ test.describe('Trip Planner UI details', () => {
 
     await page.locator('button:has-text("Plan my trip")').click();
 
-    // Wait for steps to render
-    await expect(page.locator('text=/Plan steps/i')).toBeVisible();
+    // Wait for result panel to render ("Your plan" header)
+    await expect(page.locator('text=/Your plan/i')).toBeVisible();
 
     // Reload page
     await page.reload();
     await page.waitForLoadState('networkidle');
 
-    // Plan steps should still be visible after reload (restored from localStorage)
-    await expect(page.locator('text=/Plan steps/i')).toBeVisible();
+    // Plan should still be visible after reload (restored from localStorage)
+    await expect(page.locator('text=/Your plan/i')).toBeVisible();
   });
 
   test.describe('Route simulation (anime.js map)', () => {
