@@ -39,8 +39,40 @@ export interface ToolResult {
   data?: unknown;
 }
 
+/** Safe error shape for API responses; avoids circular reference when serializing. */
+function toSafeError(error: unknown, message: string): { errorType: 'external_api'; message: string; status?: number } {
+  const status = typeof (error as { response?: { status?: number } })?.response?.status === 'number'
+    ? (error as { response: { status: number } }).response.status
+    : undefined;
+  return { errorType: 'external_api', message, ...(status != null && { status }) };
+}
+
+/** ISO 3166-1 alpha-3 → alpha-2 for Nager/APIs that expect 2-letter codes. */
+const CCA3_TO_CCA2: Record<string, string> = {
+  AFG: 'AF', ALB: 'AL', DZA: 'DZ', AND: 'AD', AGO: 'AO', ARG: 'AR', ARM: 'AM', AUS: 'AU', AUT: 'AT', AZE: 'AZ',
+  BHS: 'BS', BHR: 'BH', BGD: 'BD', BRB: 'BB', BLR: 'BY', BEL: 'BE', BLZ: 'BZ', BEN: 'BJ', BTN: 'BT', BOL: 'BO',
+  BIH: 'BA', BWA: 'BW', BRA: 'BR', BRN: 'BN', BGR: 'BG', BFA: 'BF', BDI: 'BI', KHM: 'KH', CMR: 'CM', CAN: 'CA',
+  CPV: 'CV', CAF: 'CF', TCD: 'TD', CHL: 'CL', CHN: 'CN', COL: 'CO', COM: 'KM', COG: 'CG', COD: 'CD', CRI: 'CR',
+  HRV: 'HR', CUB: 'CU', CYP: 'CY', CZE: 'CZ', DNK: 'DK', DJI: 'DJ', DMA: 'DM', DOM: 'DO', ECU: 'EC', EGY: 'EG',
+  SLV: 'SV', GNQ: 'GQ', ERI: 'ER', EST: 'EE', ETH: 'ET', FJI: 'FJ', FIN: 'FI', FRA: 'FR', GAB: 'GA', GMB: 'GM',
+  GEO: 'GE', DEU: 'DE', GHA: 'GH', GRC: 'GR', GRD: 'GD', GTM: 'GT', GIN: 'GN', GNB: 'GW', GUY: 'GY', HTI: 'HT',
+  HND: 'HN', HUN: 'HU', ISL: 'IS', IND: 'IN', IDN: 'ID', IRN: 'IR', IRQ: 'IQ', IRL: 'IE', ISR: 'IL', ITA: 'IT',
+  JAM: 'JM', JPN: 'JP', JOR: 'JO', KAZ: 'KZ', KEN: 'KE', KIR: 'KI', PRK: 'KP', KOR: 'KR', KWT: 'KW', KGZ: 'KG',
+  LAO: 'LA', LVA: 'LV', LBN: 'LB', LSO: 'LS', LBR: 'LR', LBY: 'LY', LIE: 'LI', LTU: 'LT', LUX: 'LU', MKD: 'MK',
+  MDG: 'MG', MWI: 'MW', MYS: 'MY', MDV: 'MV', MLI: 'ML', MLT: 'MT', MHL: 'MH', MRT: 'MR', MUS: 'MU', MEX: 'MX',
+  FSM: 'FM', MDA: 'MD', MCO: 'MC', MNG: 'MN', MNE: 'ME', MAR: 'MA', MOZ: 'MZ', MMR: 'MM', NAM: 'NA', NRU: 'NR',
+  NPL: 'NP', NLD: 'NL', NZL: 'NZ', NIC: 'NI', NER: 'NE', NGA: 'NG', NOR: 'NO', OMN: 'OM', PAK: 'PK', PLW: 'PW',
+  PAN: 'PA', PNG: 'PG', PRY: 'PY', PER: 'PE', PHL: 'PH', POL: 'PL', PRT: 'PT', QAT: 'QA', ROU: 'RO', RUS: 'RU',
+  RWA: 'RW', KNA: 'KN', LCA: 'LC', VCT: 'VC', WSM: 'WS', SMR: 'SM', STP: 'ST', SAU: 'SA', SEN: 'SN', SRB: 'RS',
+  SYC: 'SC', SLE: 'SL', SGP: 'SG', SVK: 'SK', SVN: 'SI', SLB: 'SB', SOM: 'SO', ZAF: 'ZA', SSD: 'SS', ESP: 'ES',
+  LKA: 'LK', SDN: 'SD', SUR: 'SR', SWE: 'SE', CHE: 'CH', SYR: 'SY', TWN: 'TW', TJK: 'TJ', TZA: 'TZ', THA: 'TH',
+  TLS: 'TL', TGO: 'TG', TON: 'TO', TTO: 'TT', TUN: 'TN', TUR: 'TR', TKM: 'TM', TUV: 'TV', UGA: 'UG', UKR: 'UA',
+  ARE: 'AE', GBR: 'GB', USA: 'US', URY: 'UY', UZB: 'UZ', VUT: 'VU', VAT: 'VA', VEN: 'VE', VNM: 'VN', YEM: 'YE',
+  ZMB: 'ZM', ZWE: 'ZW',
+};
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
+  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_KEY,
 });
 
 async function checkVisaTool(
@@ -391,10 +423,8 @@ async function weatherForecastTool(
     };
 
   } catch (error) {
-    return { 
-      summary: `Failed to fetch weather for ${destination}. (External API Error)`,
-      data: error
-    };
+    const safe = toSafeError(error, `Failed to fetch weather for ${destination}. (External API Error)`);
+    return { summary: safe.message, data: safe };
   }
 }
 
@@ -403,9 +433,8 @@ async function convertCurrencyTool(
   context: ToolContext
 ): Promise<ToolResult> {
   const travel = context.travelContext ?? {};
-  
-  // Default to converting 100 USD to the destination currency if not specified
-  const amount = (input.amount as number) || 100;
+  const rawAmount = input.amount as number | undefined;
+  const amount = rawAmount != null && isFinite(rawAmount) && rawAmount > 0 ? rawAmount : 100;
   const from = (input.from as string) || 'USD';
   let to = (input.to as string) || '';
 
@@ -432,7 +461,7 @@ async function convertCurrencyTool(
     }
 
     const convertedAmount = res.data.rates[to];
-    const rate = convertedAmount / amount;
+    const rate = amount > 0 ? convertedAmount / amount : 0;
 
     return {
       summary: `Currency Conversion: **${amount} ${from}** = **${convertedAmount.toFixed(2)} ${to}** (Exchange Rate: 1 ${from} ≈ ${rate.toFixed(4)} ${to}).`,
@@ -440,10 +469,8 @@ async function convertCurrencyTool(
     };
 
   } catch (error) {
-    return { 
-      summary: `Failed to convert currency from ${from} to ${to}. (API Error)`,
-      data: error 
-    };
+    const safe = toSafeError(error, `Failed to convert currency from ${from} to ${to}. (External API Error)`);
+    return { summary: safe.message, data: safe };
   }
 }
 
@@ -517,10 +544,8 @@ async function getLocalTimeTool(
     };
 
   } catch (error) {
-    return { 
-      summary: `Failed to fetch local time for ${destination}. (External API Error)`,
-      data: error 
-    };
+    const safe = toSafeError(error, `Failed to fetch local time for ${destination}. (External API Error)`);
+    return { summary: safe.message, data: safe };
   }
 }
 
@@ -555,7 +580,7 @@ async function checkPublicHolidaysTool(
     if (!countryCode) {
       const found = COUNTRIES.find(c => c.name.common.toLowerCase() === destination.toLowerCase());
       if (found) {
-        countryCode = (found.cca3 === 'USA' ? 'US' : found.cca3 === 'GBR' ? 'GB' : found.cca3.substring(0, 2));
+        countryCode = CCA3_TO_CCA2[found.cca3] ?? found.cca3.substring(0, 2);
         countryName = found.name.common;
       }
     }
@@ -593,10 +618,8 @@ async function checkPublicHolidaysTool(
     };
 
   } catch (error) {
-    return { 
-      summary: `Failed to fetch holidays for ${destination}. (External API Error)`,
-      data: error 
-    };
+    const safe = toSafeError(error, `Failed to fetch holidays for ${destination}. (External API Error)`);
+    return { summary: safe.message, data: safe };
   }
 }
 

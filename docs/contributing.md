@@ -5,9 +5,11 @@ Here’s how to play nicely with others.
 
 ### 1. Fork and clone
 
+1. **Fork the repo** on GitHub: open [https://github.com/yashcoded/International_Information](https://github.com/yashcoded/International_Information), click **Fork**, and choose your account.
+2. **Clone your fork** (replace `YOUR_USERNAME` with your GitHub username):
+
 ```bash
-git fork https://github.com/yashcoded/International_Information.git
-git clone <your-fork-url>
+git clone https://github.com/YOUR_USERNAME/International_Information.git
 cd International_Information
 ```
 

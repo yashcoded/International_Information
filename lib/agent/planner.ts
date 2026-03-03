@@ -27,7 +27,7 @@ export interface PlannerContext {
 }
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_KEY,
+  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_KEY,
 });
 
 const PLANNER_SYSTEM_PROMPT = `

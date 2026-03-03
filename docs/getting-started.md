@@ -53,7 +53,7 @@ touch .env.local
 Put your OpenAI key inside:
 
 ```env
-OPENAI_KEY=sk-...your-key-here...
+OPENAI_API_KEY=sk-...your-key-here...
 ```
 
 > Think of this like giving your travel friend a **brain** so it can think.
