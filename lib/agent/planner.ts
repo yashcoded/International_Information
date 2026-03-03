@@ -6,6 +6,9 @@ export type PlannerAction =
   | 'estimate_budget'
   | 'travel_tips'
   | 'get_weather'
+  | 'convert_currency'
+  | 'get_local_time'
+  | 'check_public_holidays'
   | string;
 
 export interface PlannerStep {
@@ -48,6 +51,9 @@ Guidance:
   - "estimate_budget"       (rough cost ranges)
   - "travel_tips"           (practical tips and cautions)
   - "get_weather"           (7-day weather forecast)
+  - "convert_currency"      (check exchange rates)
+  - "get_local_time"        (current time and timezone offset)
+  - "check_public_holidays" (upcoming holidays to avoid closures)
 - Always start ids at 1 and increment by 1.
 - The "input" object should contain any structured fields you know
   (e.g. passport country, origin, destination, duration in days, travel style, interests).

@@ -59,13 +59,19 @@ export async function runAgent(
   const primary =
     steps.find((s) => s.action === 'check_visa') || steps[steps.length - 1];
 
-  const finalText =
+  let finalText =
     (await synthesizeFinalAnswer(userInput, plan, steps, memory, primary)) ||
     primary?.summary ||
-    'No response generated.';
+    null;
+
+  if (!finalText && steps.length > 0) {
+    finalText = steps
+      .map((s) => `**${s.action.replace(/_/g, ' ')}:** ${s.summary}`)
+      .join('\n\n');
+  }
 
   return {
-    finalText,
+    finalText: finalText || 'No response generated.',
     plan,
     steps,
   };

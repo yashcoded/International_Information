@@ -47,6 +47,35 @@ async function executeStep(
   memory: AgentMemory,
   toolContext: ToolContext,
 ): Promise<ToolResult> {
-  return callTool(step.action, step.input, toolContext, memory);
+  const MAX_RETRIES = 1;
+  let attempts = 0;
+  
+  while (attempts <= MAX_RETRIES) {
+    try {
+      attempts++;
+      const result = await callTool(step.action, step.input, toolContext, memory);
+      
+      // If the result summary contains an explicit error message (from our tools), try again
+      if (
+        result.summary.includes('(External API Error)') || 
+        result.summary.includes('Failed to fetch')
+      ) {
+         throw new Error(result.summary);
+      }
+      
+      return result;
+    } catch (error) {
+      if (attempts > MAX_RETRIES) {
+        return {
+          summary: `Failed to execute action "${step.action}" after ${attempts} attempts. Error: ${error}`,
+          data: { error: String(error) }
+        };
+      }
+      // Wait a short delay before retry
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  }
+  
+  return { summary: 'Unexpected execution failure.' };
 }
 

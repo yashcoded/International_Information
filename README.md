@@ -189,30 +189,44 @@ The app can be deployed to any platform that supports Next.js:
 
 ---
 
-## 🏗️ Project Structure
+## 🧱 Project Structure (High Level)
 
 ```
 International_Information/
-├── app/                    # Next.js 13+ app directory
-│   ├── layout.tsx         # Root layout with navbar
-│   ├── page.tsx           # Home page
-│   ├── theme.css          # Global theme styles
-│   └── [routes]/          # Dynamic routes
-├── pages/                 # Legacy pages directory
-│   ├── api/               # API routes
-│   │   └── visa-info.ts  # Visa info endpoint
-│   ├── TravelInfo.tsx     # Main travel info page
-│   ├── About.tsx          # About page
-│   └── _app.tsx           # Custom App component
-├── public/                # Static assets
-│   ├── manifest.json      # PWA manifest
-│   ├── icon-*.png         # PWA icons
-│   └── offline.html       # Offline fallback
-├── .gitignore            # Git ignore rules
-├── next.config.js        # Next.js configuration
-├── package.json          # Dependencies
-└── tsconfig.json         # TypeScript config
+├── app/                     # Modern Next.js app directory (layout, root page)
+├── pages/                   # Pages + API routes
+│   ├── api/
+│   │   ├── visa-info.ts     # Visa info endpoint
+│   │   └── plan-trip.ts     # Trip planner agent endpoint
+│   ├── TravelInfo.tsx       # Visa information UI
+│   ├── TripPlanner.tsx      # AI trip planner UI (Level 2 agent)
+│   └── _app.tsx             # Custom App component
+├── lib/
+│   └── agent/               # AI Agent architecture
+│       ├── agent.ts         # runAgent entry point
+│       ├── planner.ts       # Creates step-by-step plans
+│       ├── tools.ts         # Tools (visa, itinerary, budget, weather, currency, time, holidays)
+│       ├── executor.ts      # Executes plan steps with retry logic
+│       └── memory.ts        # In-memory conversation + step history
+├── docs/                    # Project documentation
+│   ├── getting-started.md   # How to run the app (ELI5)
+│   ├── architecture.md      # High-level architecture overview
+│   ├── ai-agent.md          # AI agent design and modules
+│   └── contributing.md      # How to contribute
+├── tests/                   # Playwright end-to-end tests
+├── public/                  # Static assets, PWA icons, manifest
+├── next.config.js           # Next.js configuration
+├── playwright.config.ts     # Playwright configuration
+├── package.json             # Dependencies & scripts
+└── tsconfig.json            # TypeScript config
 ```
+
+For more detailed docs:
+
+- [Getting Started](./docs/getting-started.md)
+- [Architecture](./docs/architecture.md)
+- [AI Agent](./docs/ai-agent.md)
+- [Contributing](./docs/contributing.md)
 
 ---
 
